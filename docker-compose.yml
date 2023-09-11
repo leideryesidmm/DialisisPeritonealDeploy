@@ -1,0 +1,45 @@
+version: '3.7'
+
+services:
+
+  frontend:
+    container_name: misaludrenal_frontend
+    image: nginx:1.17.1-alpine
+    working_dir: /usr/local/app
+    volumes:
+      - type: bind
+        source: frontend/My_Kidney_Health/
+        target: /usr/share/nginx/html
+    ports:
+      - 9002:80
+
+  backend:
+    container_name: misaludrenal_backend
+    image: openjdk:19
+    working_dir: /code
+    ports:
+      - 8081:8081
+    environment:
+      - DATABASE_URL=jdbc:mysql://misaludrenal_mysql:3306/dialisisperitoneal2?useSSL=false&serverTimezone=UTC
+      - DATABASE_USERNAME=root
+      - DATABASE_PASSWORD=wolf
+    depends_on:
+      - mysql
+    volumes:
+      - type: bind  
+        source: backend/APIAppDialisis/target
+        target: /code
+    command: java -jar /code/DialisisPeritoneal-0.0.1-SNAPSHOT.war
+
+  mysql:
+    container_name: misaludrenal_mysql
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: wolf 
+      MYSQL_DATABASE: dialisisperitoneal2
+      MYSQL_PASSWORD: wolf
+    ports:
+      - 3306:3306
+    volumes:
+      - ./sql/dialisisperitoneal2.sql:/docker-entrypoint-initdb.d/dialisisperitoneal2.sql
+
