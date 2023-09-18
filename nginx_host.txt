@@ -1,0 +1,23 @@
+location /misaludrenal {
+    client_max_body_size 200m;
+    proxy_pass  http://10.128.0.25:8103/;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto https;
+    proxy_ssl_name $host;
+    proxy_read_timeout 7d;
+    proxy_send_timeout 7d;
+  }
+
+ location /misaludrenalbackend {
+    client_max_body_size 200m;
+    proxy_pass  http://10.128.0.25:8104/;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto https;
+    proxy_ssl_name $host;
+    proxy_read_timeout 7d;
+    proxy_send_timeout 7d;
+  }
