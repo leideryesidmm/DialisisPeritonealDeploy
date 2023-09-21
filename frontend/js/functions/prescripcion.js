@@ -458,7 +458,7 @@ let mostrarPrescripcion= async (prescripcion, fecha, recambios) => {
             fecha.getDate() === hoy.getDate()){
               estado="P";
                 msg+='background-color:#e6b216;">';
-                accion='<a style="color:black" href="agregarRecambio.html?idRecambio='+recambio.idRecambio+'">'
+                accion='<a style="color:black" href="agregarrecambio.html?idRecambio='+recambio.idRecambio+'">'
                     +'<svg class="icon-hover" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">'
                     +'<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>'
                     +'<path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>'
@@ -478,7 +478,7 @@ let mostrarPrescripcion= async (prescripcion, fecha, recambios) => {
                 fecha.getDate() === (hoy.getDate()-1)){
                     estado="P";
                     msg+='background-color:rgb(252, 130, 59);">';
-                    accion='<a style="color:black" href="agregarRecambio.html?idRecambio='+recambio.idRecambio+'">'
+                    accion='<a style="color:black" href="agregarrecambio.html?idRecambio='+recambio.idRecambio+'">'
                     +'<svg class="icon-hover" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">'
                     +'<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>'
                     +'<path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>'
@@ -1421,7 +1421,7 @@ let mostrarVisita=async()=>{
           </div>
           </div><br>
           <div class="row text-center">
-          <div class="col-12"><img src="../img/Farmacia.png" alt="" width="50" height="55" />&nbsp
+          <div class="col-12"><img src="../img/farmacia.png" alt="farmacia" width="50" height="55" />&nbsp
           ${farmacia?
             `<input class="form-check-input" type="checkbox" name="visita" value="farmacia" id="farmacia" checked disabled>`:`<input class="form-check-input" type="checkbox" name="visita" value="farmacia" id="farmacia" disabled>`}
             <label class="form-check-label" for="flexCheckDefault">
@@ -1503,7 +1503,7 @@ else{
           '</div>' +
           '</div><br>' +
           '<div class="row text-center">' +
-          '<div class="col-12"><img src="../img/Farmacia.png" alt="" width="50" height="55" />&nbsp<input class="form-check-input" type="checkbox" name="visita" value="farmacia" id="farmacia">' +
+          '<div class="col-12"><img src="../img/farmacia.png" alt="farmacia" width="50" height="55" />&nbsp<input class="form-check-input" type="checkbox" name="visita" value="farmacia" id="farmacia">' +
           '  <label class="form-check-label" for="flexCheckDefault">' +
           '    Farmacia' +
           '  </label>' +
@@ -1688,7 +1688,7 @@ let editarChequeo=async()=>{
 
 let editarVisita=async()=>{
   let msg="";
-  
+  let visita=await obtenerUltimaVisita();
   let nombrePaciente=CryptoJS.AES.decrypt(visita.cita.paciente.nombre,"clave_secreta").toString(CryptoJS.enc.Utf8);
   let cedulaPaciente=CryptoJS.AES.decrypt(visita.cita.paciente.cedula,"clave_secreta").toString(CryptoJS.enc.Utf8);
   let nefrologia=visita.nefrologia;
@@ -1760,7 +1760,7 @@ let editarVisita=async()=>{
           </div>
           </div><br>
           <div class="row text-center">
-          <div class="col-12"><img src="../img/Farmacia.png" alt="" width="50" height="55" />&nbsp
+          <div class="col-12"><img src="../img/farmacia.png" alt="farmacia" width="50" height="55" />&nbsp
           ${farmacia?
             `<input class="form-check-input" type="checkbox" name="visita" value="farmacia" id="editarFarmacia" checked >`:`<input class="form-check-input" type="checkbox" name="visita" value="farmacia" id="editarFarmacia">`}
             <label class="form-check-label" for="flexCheckDefault">
