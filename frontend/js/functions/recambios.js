@@ -146,7 +146,7 @@ let listRecambios = async (recambios) => {
       ms+='<div class="row">'+
       '<div class="col-10"></div>'+
       '<div class="col-2">'+
-          '<a href="agregarRecambio.html"><img src="../img/nuevo.png" alt="" id="icono"></a>'+
+          '<a href="agregarrecambio.html"><img src="../img/nuevo.png" alt="" id="icono"></a>'+
       '</div>'+
   '</div>';
   document.getElementById("agregar").innerHTML=ms;
