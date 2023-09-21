@@ -706,7 +706,7 @@ let inhabilitarCuidador=async()=>{
     cuidadorInDto:cuidador,
     pacienteInDto:paciente
   }
-  const peticion2= await fetch(localStorage.getItem("servidorAPI") + "paciente/cuidador/inhabilitarCuidadorActivo",{
+  await fetch(localStorage.getItem("servidorAPI") + "paciente/cuidador/inhabilitarCuidadorActivo",{
     method: "PATCH",
               body: JSON.stringify(
                 cuidadorPaciente
@@ -723,5 +723,4 @@ let inhabilitarCuidador=async()=>{
       }
     }
   })
-  location.reload();
 }
