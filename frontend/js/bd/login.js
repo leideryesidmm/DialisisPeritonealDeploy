@@ -1,4 +1,4 @@
-let servidorAPI = "/misaludrenalbackend/";
+let servidorAPI = "http://localhost:8104/";
 
 function isAuthenticated() {
   return localStorage.getItem("authenticated") === "true";
