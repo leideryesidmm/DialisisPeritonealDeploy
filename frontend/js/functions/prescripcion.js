@@ -102,8 +102,8 @@ function generarPrescripciones(){
             '<option value="perfecto">Perfecto</option>'+
             '<option value="bueno">Bueno</option>'+
             '<option value="equivoco">Equívoco</option>'+
-            '<option value="infeccionAguda">Infección Aguda</option>'+
-            '<option value="infeccionCronica">Infeccion Crónica</option>'+
+            '<option value="infección Aguda">Infección Aguda</option>'+
+            '<option value="infección Crónica">Infeccion Crónica</option>'+
             '<option value="trauma">Trauma</option>'+
           '</select>'+
           
