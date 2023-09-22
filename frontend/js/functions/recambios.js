@@ -99,7 +99,7 @@ let listRecambios = async (recambios) => {
       +'            <p><strong>Drenaje:</strong></p>'
       +'            <p class="drenaje" id="drenaje">'
       +'            '+(CryptoJS.AES.decrypt(decodeURIComponent(recambio.drenajeDialisis), "clave_secreta").toString(CryptoJS.enc.Utf8))
-      +'            </p>'
+      +'            ml</p>'
       +'        </div>'
       +'        <div class="balan">'
       +'            <p><strong>Balance:</strong></p>'
