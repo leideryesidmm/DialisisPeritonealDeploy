@@ -141,3 +141,26 @@ li{
   cursor: pointer;
 }
 
+@media screen and (max-width: 495px) {
+  .container {
+    max-width: 100%;
+    margin: 10px auto;
+    padding: 10px;
+  }
+
+  .medico td {
+    width: auto;
+    text-align: center;
+    font-size: small;
+  }
+
+  .ver,
+  .actualizar,
+  .inhabilitar {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+}
+
