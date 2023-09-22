@@ -134,12 +134,12 @@ if(paciente!=null){
           '</div>';
           }
           msg+='<div class="diabetes">'+
-              '<label><b>Diabetes</b></label>'+
-              '<input type="checkbox" name="diabetes" id="diabetesTrue" class="styled-checkbox" '+ (paciente.diabetes ? 'checked disabled' : 'disabled')+'>'+
+              '<label><b>Diabetes: </b></label>'+
+              '<input type="checkbox" name="diabetes" id="diabetesTrue" class="styled-checkbox" '+ ( paciente.diabetes ? ' checked disabled' :   'disabled')+'>'+
           '</div>'+
           '<div class="hipertension">'+
-              '<label><b>Hipertensión</b></label>'+
-              '<input type="checkbox" name="hipertension" id="hipertensionTrue" class="styled-checkbox" '+ (paciente.hipertension ? 'checked disabled' : 'disabled')+'>'+
+              '<label><b>Hipertensión: </b></label>'+
+              '<input type="checkbox" name="hipertension" id="hipertensionTrue" class="styled-checkbox" '+ ( paciente.hipertension ? ' checked disabled' :  'disabled')+'>'+
           '</div>'+ 
           '<div class="eps">'+
             '<label for="eps"><b>Eps:</b></label>'+
@@ -179,7 +179,8 @@ else{
   if(usuario=="medico"){
   msg+='<div class="botonAgregarAlergia">'+
   '<br><a href="alergias.html"class="alerg-nueva" >Agregar Alergia</a>'+
-  '<br>';
+  '<br>'+
+  '</div>';
   }
 }
 if(cuidador!=null && cuidador !== ""){
