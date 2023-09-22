@@ -527,7 +527,7 @@ let verRecambio=async(idRecambio)=>{
 
   document.getElementById("inicio").innerText=recambio.hora_ini.replace("T", " ");
   document.getElementById("final").innerText=recambio.hora_fin.replace("T", " ");
-  document.getElementById("drenaje").innerText=decodeURIComponent(CryptoJS.AES.decrypt(recambio.drenajeDialisis, 'clave_secreta').toString(CryptoJS.enc.Utf8));
+  document.getElementById("drenaje").innerText=decodeURIComponent(CryptoJS.AES.decrypt(recambio.drenajeDialisis, 'clave_secreta').toString(CryptoJS.enc.Utf8))+" ml";
   document.getElementById("concentracion").innerText=recambio.recambio.concentracion+"%";
   document.getElementById("estadoOrificio").innerText=decodeURIComponent(CryptoJS.AES.decrypt(recambio.orificioSalida, 'clave_secreta').toString(CryptoJS.enc.Utf8));
   document.getElementById("caracteristicaliquido").innerText=decodeURIComponent(CryptoJS.AES.decrypt(recambio.caracteristicaLiquido, 'clave_secreta').toString(CryptoJS.enc.Utf8));
