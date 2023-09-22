@@ -90,13 +90,6 @@ label {
 
 }
 
-.devolverse {
-  margin-left: 20px;
-  display: flex;
-  align-items: center;
-  width: 5%;
-  vertical-align: middle;
-}
 
 #container {
   width: 100%;
@@ -300,12 +293,6 @@ tbody tr:hover {
   align-items: center;
   margin: 0 auto;
   margin: 3.5px;
-}
-
-.devolverse {
-  width: 30px;
-  height: 50px;
-  margin-left: 20px;
 }
 
 .devolverseRecambio {
