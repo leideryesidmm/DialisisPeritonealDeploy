@@ -141,17 +141,11 @@ height: 30px;
 }
 
 .devolverse {
-margin-left: 20px;
-display: flex;
-align-items: center;
-width: 5%;
-vertical-align: middle;
-}
-
-.devolverse {
-width: 30px;
-height: 50px;
-margin-left: 20px;
+  width: 30px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
 }
 
 .navbar {
