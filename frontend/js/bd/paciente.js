@@ -432,7 +432,7 @@ let listaEps = async () => {
   if (selectEps.length == 0) {
     const epss = await peticion.json();
     const optionSeleccionar = document.createElement('option');
-    optionSeleccionar.textContent = "Seleccione";
+    optionSeleccionar.textContent = "Seleccione...";
     selectEps.appendChild(optionSeleccionar);
     epss.forEach(eps => {
       const option = document.createElement('option');
