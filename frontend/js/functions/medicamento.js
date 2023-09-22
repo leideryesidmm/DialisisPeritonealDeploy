@@ -176,7 +176,7 @@ let listMedicamentos = async (medicamentos) => {
     }
   } else {
     msg +=
-      '<b><p class="sinMedicamentos">No tiene medicamentos registrados<p></b>';
+      '<b><p class="sinMedicamentos">No tiene medicamentos registrados.<p></b>';
   }
 
   ms += msg + "</div>";
