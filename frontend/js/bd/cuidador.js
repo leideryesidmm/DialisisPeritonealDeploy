@@ -244,7 +244,7 @@ let cuidadorPorPaciente=async()=>{
       if (selectParentesco.length === 0) {
         const parentescos = await peticion.json();
         const optionSeleccionar = document.createElement('option');
-        optionSeleccionar.textContent = "Seleccione";
+        optionSeleccionar.textContent = "Seleccione...";
         selectParentesco.appendChild(optionSeleccionar);
         parentescos.forEach(parentesco => {
           const option = document.createElement('option');
@@ -271,7 +271,7 @@ let cuidadorPorPaciente=async()=>{
       if (selectParentesco.length === 0) {
         const parentescos = await peticion.json();
         const optionSeleccionar = document.createElement('option');
-        optionSeleccionar.textContent = "Seleccione";
+        optionSeleccionar.textContent = "Seleccione...";
         selectParentesco.appendChild(optionSeleccionar);
         parentescos.forEach(parentesco => {
           const option = document.createElement('option');
