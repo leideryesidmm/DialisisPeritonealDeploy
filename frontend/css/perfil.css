@@ -186,9 +186,7 @@ label{
 .title {
   color: #fff;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  vertical-align: middle;
+  height: fit-content;
 }
 
 .inf-cuidador p {
