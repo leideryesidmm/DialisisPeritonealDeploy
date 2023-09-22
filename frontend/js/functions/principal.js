@@ -3,7 +3,7 @@ let principal = () => {
     let usuario = JSON.parse(localStorage.getItem("datos")).usuario;
     if (usuario == "paciente") {
         ms +=
-            '<div class="navbar"><div class="col-2 no-effect"><input type="image" id="logo-principal" src="../img/logo3.png"></div>' +
+            '<div class="navbar"><div class="col-2t"><input type="image" id="logo-principal" src="../img/logo3.png"></div>' +
             '<div class="col-8 no-effect"><h1 class="title-principal-app">Mi Salud Renal</h1></div>' +
             '<div class="col-2 no-effect"><input type="image" class="logout" src="../img/log-out-white.png" onclick="logout()"></div></div>';
     }
@@ -11,7 +11,7 @@ let principal = () => {
         ms +=
         '<nav id="nav" class=" navbar-expand-lg navbar-light">'+
         '<div class="row">'+
-        '<div class="col-1 no-effect"><a href="pacientes.html" class="devolverse"><img src="../img/devolverseColor.png" alt="" id="icono"></a></div>'+  
+        '<div class="col-1"><a href="pacientes.html" class="devolverse"><img src="../img/devolverseColor.png" alt="" id="icono"></a></div>'+  
         '<div class="col-1">'+
             '<div class="logo"><img src="../img/logo3.png" alt=""></div>'+
           '</div>'+
