@@ -123,6 +123,9 @@ p{
   .small-css{
     font-size: large;
   }
+   #text{
+    font-size: 25px;
+  }
 }
 #foot{
   width: 50%;
