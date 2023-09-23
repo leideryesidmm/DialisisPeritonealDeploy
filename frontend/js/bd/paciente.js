@@ -364,20 +364,7 @@ console.log(paciente);
       var decryptedCorreo = CryptoJS.AES.decrypt(paciente.correo, 'clave_secreta').toString(CryptoJS.enc.Utf8);
       document.getElementById("correo").value = decryptedCorreo;
     }
-    console.log(paciente.foto);
-  if (paciente.foto!=null) {
-    const binaryString = window.atob(paciente.foto);
-  const byteArray = new Uint8Array(binaryString.length);
-  for (let i = 0; i < binaryString.length; i++) {
-    byteArray[i] = binaryString.charCodeAt(i);
-  }
-  const blob = new Blob([byteArray], { type: 'image/jpeg' });
-
-  const imageUrl = URL.createObjectURL(blob);
-  console.log(imageUrl);
-  document.getElementById("imageFile").value = imageUrl;
-  }
-  const selectEps = document.getElementById('selectedEps');
+    const selectEps = document.getElementById('selectedEps');
   const descripcionEps= paciente.eps.nombre;
   console.log(descripcionEps);
   
@@ -386,6 +373,20 @@ console.log(paciente);
       selectEps.selectedIndex = index;
     }
   })
+    console.log(paciente.foto);
+  if (paciente.foto!=null) {
+    const binaryString = window.atob(paciente.foto);
+  const byteArray = new Uint8Array(binaryString.length);
+  for (let i = 0; i < binaryString.length; i++) {
+    byteArray[i] = binaryString.charCodeAt(i);
+  }
+  const blob = new Blob([byteArray], { type: 'image/*' });
+
+  const imageUrl = URL.createObjectURL(blob);
+  console.log(imageUrl);
+  document.getElementById("imageFile").value = imageUrl;
+  }
+  
   }
   else{
     var decryptedNombre = CryptoJS.AES.decrypt(paciente.nombre, 'clave_secreta').toString(CryptoJS.enc.Utf8);
