@@ -141,11 +141,17 @@ height: 30px;
 }
 
 .devolverse {
-  width: 30px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  vertical-align: middle;
+margin-left: 20px;
+display: flex;
+align-items: center;
+width: 5%;
+vertical-align: middle;
+}
+
+.devolverse {
+width: 30px;
+height: 50px;
+margin-left: 20px;
 }
 
 .navbar {
@@ -259,4 +265,8 @@ align-items: flex-start;
 .small-css{
   font-size: large;
 }
+}
+
+.btn{
+  color: #fff;
 }
