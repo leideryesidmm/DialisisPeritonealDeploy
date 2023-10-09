@@ -6,7 +6,7 @@ function isAuthenticated() {
 
 let login = async (event) => {
   event.preventDefault();
-
+  document.getElementById("log-in").disabled=true;
   const peticion3 = await fetch(servidorAPI + 'Usuario/findAdmin', {
     method: 'GET',
     headers: {
@@ -118,11 +118,14 @@ let medicoEncontrado=false;
       })
     }
     if(!pacienteEncontrado && !medicoEncontrado){
+      $('#errorDatosModal').modal('show');
       let msg="";
       msg+='<p class="error">¡Datos Incorrectos!</p>';
       document.getElementById("datosIncorrectos").innerHTML=msg;
+      document.getElementById("log-in").disabled=false;
     }
 }
+      
 // Función para manejar el cierre de sesión
 let logout = () => {
   localStorage.removeItem("authenticated")
