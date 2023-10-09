@@ -111,6 +111,11 @@ h3 {
         align-items: center;
 }
 
+.btn-nuevo:hover{
+  text-decoration: none;
+  color: #fff;
+}
+
 .inhabilitarCuidador{
   background-color: #c71919;
     color: #fff;
@@ -174,7 +179,7 @@ h3 {
     text-align: center;
   }
 
-  #reactivarCuidador {
+  .reactivarCuidador {
     background-color: transparent;
     border: none;
     padding: 0;
@@ -203,4 +208,24 @@ button img{
     [class*="col-"] {
       width: 100%;
     }
+  }
+
+  .imagen-crecible {
+    width: 80%;
+    height: auto;
+    transition: transform 0.3s; /* Agrega una transición suave */
+  }
+  
+  .imagen-crecible:hover {
+    transform: scale(1.3); 
+  }
+  
+  .imagen-crecible-iconos {
+    width: 80%;
+    height: auto;
+    transition: transform 0.3s; /* Agrega una transición suave */
+  }
+  
+  .imagen-crecible-iconos:hover {
+    transform: scale(1.3); 
   }
