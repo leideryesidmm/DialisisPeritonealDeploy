@@ -5,6 +5,7 @@
 }
 #text{
     color: white;
+    
 }
 #navbarSupportedContent{
     justify-content: right;
@@ -123,7 +124,7 @@ p{
   .small-css{
     font-size: large;
   }
-   #text{
+  #text{
     font-size: 25px;
   }
 }
