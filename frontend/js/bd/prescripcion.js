@@ -28,6 +28,56 @@ if(peticion.status===200){
 return prescripcion;}
 }
 
+let visitas= async()=>{
+
+       let cedulaEncriptada = await obtenerCedulaEncriptada(0, CryptoJS.AES.decrypt(decodeURIComponent(localStorage.getItem("cedulaPaciente")), "clave_secreta").toString(CryptoJS.enc.Utf8));
+      ;
+      const pacienteInDto={
+        cedula:cedulaEncriptada
+       }
+       console.log(pacienteInDto);
+    const peticion= await fetch(localStorage.getItem("servidorAPI")+"paciente/prescripcion/visitas",{
+      method:"POST",
+      body:JSON.stringify(pacienteInDto),
+      headers:{
+        "Accept":"application/json",
+        "Content-Type":"application/json"
+      }
+});
+if(peticion.status===200){
+    const visitas=await peticion.json();
+return visitas;}
+if(peticion.status===204){
+  let array=[];
+  return array;
+}
+}
+
+let chequeos= async()=>{
+
+  cedulaEncriptada = await obtenerCedulaEncriptada(0, CryptoJS.AES.decrypt(decodeURIComponent(localStorage.getItem("cedulaPaciente")), "clave_secreta").toString(CryptoJS.enc.Utf8));
+ ;
+ const pacienteInDto={
+  cedula:cedulaEncriptada
+ }
+const peticion= await fetch(localStorage.getItem("servidorAPI")+"paciente/prescripcion/chequeos",{
+ method:"POST",
+ body:JSON.stringify(pacienteInDto),
+ headers:{
+   "Accept":"application/json",
+   "Content-Type":"application/json"
+ }
+});
+if(peticion.status===200){
+const chequeos=await peticion.json();
+return chequeos;}
+if(peticion.status===204){
+  let array=[];
+  return array;
+}
+
+}
+
 let obtenerCedulaEncriptada=async(id, cedula)=>{
   let result = ""
   const peticion= await fetch(localStorage.getItem("servidorAPI")+'Usuario/findAllUsuarios',{
@@ -246,6 +296,9 @@ let crearRecambio = async () => {
 
   let guardarRecambio=async(event)=>{
     event.preventDefault();
+    const btnRecambio=document.getElementById("agregRecam");
+    btnRecambio.style.background="gray";
+    btnRecambio.disabled="true";
     let orificio;
     document.getElementsByName("opcion").forEach(opcion => {
       if(opcion.checked==true){
@@ -344,6 +397,7 @@ for (let i = 0; i < inputRadios.length; i++) {
 
   let editarRecambio=async()=>{
     let orificio;
+
     document.getElementsByName("opcion").forEach(opcion => {
       if(opcion.checked==true){
         orificio= opcion.value}
@@ -401,8 +455,6 @@ for (let i = 0; i < inputRadios.length; i++) {
   let dato=JSON.parse(data);
       let usuario = dato.usuario;
       let cedul= decodeURIComponent(dato.cedula);
-      let cedEncriptada="";
-      let cedulaEncriptada="";
       if(usuario=="medico"){
        ced = await obtenerCedulaEncriptada(0, CryptoJS.AES.decrypt(decodeURIComponent(localStorage.getItem("cedulaPaciente")), "clave_secreta").toString(CryptoJS.enc.Utf8));
       }
@@ -557,13 +609,29 @@ for (let i = 0; i < inputRadios.length; i++) {
 }
 
 function errorDia(){
-  $('#errorModal').modal('hide');
+  
+       const btnGuardarPrescripcion=document.getElementById("agregarPrescripcion");
+      btnGuardarPrescripcion.style.background="#04BAFC";
+      btnGuardarPrescripcion.disabled=false;
+      $('#errorModal').modal('hide');
+}
+
+function errorDiaEditar(){
+  
+  const btnPrescripcion=document.getElementById("editarPrescripcion");
+      btnPrescripcion.style.background="#04BAFC";
+      btnPrescripcion.disabled=false;
+      $('#errorModal').modal('hide');
 }
 
   let obtenerValoresDePrescripcion=async(event)=>{
     event.preventDefault();
+
 let validacirChecks=validarCeckbox();
     if(validacirChecks==true){
+      const btnPrescripcion=document.getElementById("agregarPrescripcion");
+    btnPrescripcion.style.background="gray";
+    btnPrescripcion.disabled="true"
     await crearCita(event);
     await crearPrescripcionDia(event);
     await crearRecambios(event);
@@ -571,6 +639,9 @@ let validacirChecks=validarCeckbox();
   }
     else{
       $('#errorModal').modal('show');
+      const btnPrescripcion=document.getElementById("agregarPrescripcion");
+      btnPrescripcion.style.background="gray";
+      btnPrescripcion.disabled="true"
     }
   }
 
@@ -592,6 +663,7 @@ let validacirChecks=validarCeckbox();
 
   let crearPrescripcionDia=async(event)=>{
     event.preventDefault();
+    
     let prescripcionDia= await obtenerDatosPrescripcionDia(event);
     
     let ultimaCita=await encontrarUltimaCita(event);
@@ -793,6 +865,9 @@ let validacirChecks=validarCeckbox();
     event.preventDefault();
     let checks=validarCeckbox();
     if(checks==true){
+      const btnPrescripcion=document.getElementById("editarPrescripcion");
+      btnPrescripcion.style.background="gray";
+      btnPrescripcion.disabled="true"
     await eliminarCita();
     await crearCita(event);
     await crearPrescripcionDia(event);
@@ -801,6 +876,9 @@ let validacirChecks=validarCeckbox();
   }
     else{
       $('#errorModal').modal('show');
+      const btnPrescripcion=document.getElementById("editarPrescripcion");
+      btnPrescripcion.style.background="gray";
+      btnPrescripcion.disabled="true"
     }
   }    
 
@@ -940,10 +1018,15 @@ let actualizarChequeo=async()=>{
   let potasio= parseFloat(document.getElementById("editarPotasio").value);
   let nitrogenoUreico= parseFloat(document.getElementById("editarNitrogenoUreico").value);
   let hdl= parseFloat(document.getElementById("editarHdl").value);
+  let peso= parseFloat(document.getElementById("editarPeso").value);
+  let pesoSeco= parseFloat(document.getElementById("editarPesoSeco").value);
+  let glucosa= parseFloat(document.getElementById("editarGlucosa").value);
+  let creatinina= parseFloat(document.getElementById("editarCreatinina").value);
+  let ktv= parseFloat(document.getElementById("editarKtv").value);
 
   let chequeoInDto={
     cita:idCita, tensionArterial:tensionArterial, colesterolTotal:colesterolTotal,
-    glicemia:glicemia, trigliceridos:trigliceridos, ldh:ldh, hemoglobina:hemoglobina, fosforo:fosforo, potasio:potasio, nitrogenoUreico:nitrogenoUreico, hdl:hdl
+    glicemia:glicemia, trigliceridos:trigliceridos, ldh:ldh, hemoglobina:hemoglobina, fosforo:fosforo, potasio:potasio, nitrogenoUreico:nitrogenoUreico, hdl:hdl, glucosa:glucosa, creatinina:creatinina, ktv:ktv, peso:peso, peso_seco:pesoSeco
   }
   console.log(chequeoInDto);
 
@@ -975,8 +1058,11 @@ let actualizarVisita=async()=>{
   let nutricion=document.getElementById("editarNutricion").checked?true:false;
   let trabajoSocial=document.getElementById("editarTrabajoSocial").checked?true:false;
   let auxiliarAdmisiones=document.getElementById("editarAuxiliarAdmisiones").checked?true:false;
-
-  let visitaEspecialistaInDto={ cita:idCita, farmacia:farmacia, nefrologia:nefrologia, psicologia:psicologia, enfermeria:enfermeria, nutricion:nutricion, trabajoSocial:trabajoSocial, auxiliarAdmisiones:auxiliarAdmisiones
+  let entrenamiento=document.getElementById("editarEntrenamiento").checked?true:false;
+  let reentrenamiento=document.getElementById("editarReentrenamiento").checked?true:false;
+  let visitadomiciliaria=document.getElementById("editarVisitaDomiciliaria").checked?true:false;
+  console.log(visitadomiciliaria);
+  let visitaEspecialistaInDto={ cita:idCita, farmacia:farmacia, nefrologia:nefrologia, psicologia:psicologia, enfermeria:enfermeria, nutricion:nutricion, trabajoSocial:trabajoSocial, auxiliarAdmisiones:auxiliarAdmisiones, entrenamiento:entrenamiento, reentrenamiento:reentrenamiento, visita_domiciliaria:visitadomiciliaria
   }
   
 
