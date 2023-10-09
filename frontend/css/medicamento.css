@@ -183,3 +183,24 @@ h2{
       right: 20px;
       }
   }
+
+
+  .imagen-crecible {
+    width: 80%;
+    height: auto;
+    transition: transform 0.3s; /* Agrega una transición suave */
+  }
+  
+  .imagen-crecible:hover {
+    transform: scale(1.3); 
+  }
+  
+  .imagen-crecible-iconos {
+    width: 80%;
+    height: auto;
+    transition: transform 0.3s; /* Agrega una transición suave */
+  }
+  
+  .imagen-crecible-iconos:hover {
+    transform: scale(1.3); 
+  }
