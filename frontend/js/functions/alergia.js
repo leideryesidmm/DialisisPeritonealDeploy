@@ -16,8 +16,8 @@ let listAlergias = async (alergias) => {
                 '<tr>' +
                 '<td>' + alergia.nombre + '</td>' +
                 '<td>' +
-                '<a href="" data-bs-toggle="modal" data-bs-target="#editaralergia' + cont + '"><img src="../img/editaraler.png"  alt="" id="inhabilitar"></a>' +
-                '<a href="" data-bs-toggle="modal" data-bs-target="#eliminaralergia' + cont + '"><img src="../img/inhabilitar.png" alt="" id="inhabilitar"></a>' +
+                '<a href="" data-bs-toggle="modal" data-bs-target="#editaralergia' + cont + '"><img src="../img/editaraler.png" class="imagen-crecible-iconos"  alt="Editar Alergia" id="inhabilitar"></a>' +
+                '<a href="" data-bs-toggle="modal" data-bs-target="#eliminaralergia' + cont + '"><img src="../img/inhabilitar.png" class="imagen-crecible-iconos" alt="Inhabilitar Alergía" id="inhabilitar"></a>' +
   
                 '</td>' +
                 '</tr>' +
@@ -57,7 +57,7 @@ let listAlergias = async (alergias) => {
                 '</div>' +
                 '<div class="modal-footer">' +
                 '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>' +
-                '<button type="submit" id="editarAlergia" onclick="editarAlergia(' + alergia.idAlergia + ')" class="btn btn-primary">Guardar</button>' +
+                '<button type="submit" id="editarAlergia" onclick="editarAlergia(' + alergia.idAlergia + ')" class="btn btn-primary">Actualizar</button>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
