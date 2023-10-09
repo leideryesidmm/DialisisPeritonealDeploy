@@ -48,8 +48,9 @@ let perfil=async()=>{
 
     document.getElementById("title").innerHTML=ms;
 if(paciente!=null){
+    let fecha_registro=new Date(paciente.fecha_registro).toLocaleDateString();
     msg+=
-
+    
   '<br>'+
     '<div class="datos">'+
     '<div class="col-md-6">'+
@@ -57,9 +58,17 @@ if(paciente!=null){
         '<div class="subtitle">'+
           '<h3>Datos Personales</h3>'+
         '</div>'+
+        '<div class="fechaRegistro">'+
+            '<label for="nombre"><b>Fecha de Registro:</b></label>'+
+            '<label for="" id="fechaRegistro">'+fecha_registro+'</label>'+
+          '</div>'+
           '<div class="nombrePaciente">'+
             '<label for="nombre"><b>Nombre:</b></label>'+
             '<label for="" id="nombre">'+paciente.nombre+'</label>'+
+          '</div>'+
+          '<div class="tipoDocumento">'+
+            '<label for="tipoDocumento"><b>Tipo de Documento:</b></label>'+
+            '<label for="" id="tipoDocumento">'+paciente.tipo_documento+'</label>'+
           '</div>'+
           '<div class="documento">'+
             '<label for="documento"><b>Documento:</b></label>'+
@@ -83,7 +92,7 @@ if(paciente!=null){
           '</div>';
           if(paciente.ocupacion!=null && paciente.ocupacion!= ""){
           msg+='<div class="ocupacion">'+
-            '<label for="ocupacion"><b>Ocupacion:</b></label>'+
+            '<label for="ocupacion"><b>Ocupación:</b></label>'+
             '<label for="" id="ocupacion">'+paciente.ocupacion+'</label>'+
           '</div>';}
           if(paciente.correo!=null && paciente.correo!= ""){
@@ -91,7 +100,7 @@ if(paciente!=null){
               '<label for="correo"><b>Correo:</b></label>'+
               '<label for="" id="correo">'+paciente.correo+'</label>'+
             '</div>';}
-            msg+='<img alt="" id="imagen">';
+            msg+='<img alt="Editar perfil" id="imagen">';
           let usuario = JSON.parse(localStorage.getItem("datos")).usuario;
           var urlActual = window.location.href;
           console.log(paciente.tipo_documento);
@@ -109,7 +118,7 @@ if(paciente!=null){
       '<div class="col-md-6">'+    
       '<div class="medicos">'+
         '<div class="subtitle">'+
-          '<h3>Datos Médicos</h3>'+
+          '<h3>Datos profesional de la salud</h3>'+
         '</div>'+
           '<div class="peso">'+
             '<label for="peso"><b>Peso:</b></label>'+
@@ -169,7 +178,7 @@ if(alergia!=null && alergia !== ""){
     let usuario = JSON.parse(localStorage.getItem("datos")).usuario;
     if(usuario=="medico"){
     msg+='<div class="botonAgregarAlergia">'+
-    '<a href="alergias.html"class="alerg-nueva" >Agregar Alergia</a>'+
+    '<a href="alergias.html"class="alerg-nueva" id="addAlergia">Agregar Alergia</a>'+
     '</div>'+
     '<br>';
     }
@@ -312,10 +321,10 @@ let editarPaciente=async()=>{
             '</div>'+
             '<div class="buttons">'+
             '<div class="btn-save">'+
-              '<a href="perfil.html" class="cancelar">Cancelar</a>'+
+              '<a href="perfil.html" class="cancelar" id="cancelar">Cancelar</a>'+
             '</div>'+
             '<div class="btn-save">'+
-              '<button type="submit" class="guardarPac">Actualizar</button>'+
+              '<button id="actualizarPerfil" type="submit" class="btn btn-primary" data-toggle="modal" data-target="#succesModal" >Actualizar</button>'+
             '</div>'+
             '</div>'+
             '</div>'+
@@ -350,12 +359,12 @@ else{
           '<div class="form-column">'+
               '<label for="peso" id="data">Peso:<label id="asq">*</label></label>'+
               '<br>'+
-              '<input type="text" class="peso" id="peso" name="peso" required>'+
+              '<input type="number" class="peso" id="peso" name="peso" required>'+
             '</div>'+
             '<div class="form-column">'+
               '<label for="pesoseco" id="data">Peso Seco:<label id="asq">*</label></label>'+
               '<br>'+
-              '<input type="text" class="pesoseco" id="pesoseco" name="pesoseco" required>'+
+              '<input type="number" class="pesoseco" id="pesoseco" name="pesoseco" required>'+
             '</div>'+
             
           '</div>'+
@@ -363,7 +372,7 @@ else{
             '<div class="form-column">'+
               '<label for="estatura" id="data">Estatura:</label>'+
               '<br>'+
-              '<input type="text" class="estatura" id="estatura" name="estatura" placeholder="Estatura en cm">'+
+              '<input type="number" class="estatura" id="estatura" name="estatura" placeholder="Estatura en cm">'+
             '</div>'+ 
             '<div class="form-column enfermedades" >'+
               '<label for="hipertension" id="data2">Hipertensión: </label> ' +
@@ -377,7 +386,7 @@ else{
               '<button onclick="cancelar()" class="cancelar">Cancelar</button>'+
             '</div>'+
             '<div class="btn-save">'+
-              '<button type="submit" class="guardarPac">Actualizar</button>'+
+              '<button type="submit" data-toggle="modal" data-target="#successModal" id="actualizarPerfil">Actualizar</button>'+
             '</div>'+
             '</div>'+
             '</form>';
