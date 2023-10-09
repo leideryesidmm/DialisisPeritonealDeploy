@@ -81,6 +81,22 @@ body {
     clear: both;
   }
 
+  .close{
+    border: none;
+    border-radius: 80%;
+    background-color: #ffffff;
+    opacity: 1;  
+    font-size: 24px;
+  }
+
+  .close:focus{
+    border: none;
+    border-radius: 80%;
+    border-color: transparent;
+    background-color: #ffffff;
+    opacity: 1;  
+    font-size: 24px;
+  }
   .container {
     text-align: center;
     background-color: #dbf5f7;
@@ -98,12 +114,7 @@ body {
     display: grid;
   }
 
-  #asq{
-    color: red;
-    font-weight: bold;
-        font-size: 14px;
-        transition: transform 0.3s ease-in-out;
-  }
+ 
 
   #data2{
     
@@ -111,7 +122,7 @@ body {
     font-weight: bold;
     font-size: 14px;
     transition: transform 0.3s ease-in-out; 
-    
+    margin-right: 3px;
   }
   
  
@@ -174,8 +185,8 @@ body {
   }
 
   .form-control{
-    width: 95%;
-    height: 25px;
+    width: 45%;
+    height: 10px;
     text-align-last: center;
     padding: 0;
   }
@@ -191,17 +202,7 @@ body {
     text-align: left;
   }
   
-  .guardarPac {
-    background-color: #63D0FF;
-    color: #ffffff;
-    border: none;
-    cursor: pointer;
-    padding: 10px 40px;
-    font-size: 18px;
-    margin: 0 auto;
-    border-radius: 10px;
-  }
-
+  
 
 
   .form-container {
@@ -238,7 +239,7 @@ body {
         content: "";
       }
     
-      #data {
+      #data, #asq {
         color: #555;
         font-weight: bold;
         font-size: 14px;
@@ -246,7 +247,21 @@ body {
         transition: transform 0.3s ease-in-out;
     }
 
-    #labelConcentracion, #fechaF{
+    #asq{
+      color: red;
+      font-weight: bold;
+          font-size: 14px;
+          transition: transform 0.3s ease-in-out;
+    }
+
+    #asquerisco{
+      color: red;
+      font-weight: bold;
+          font-size: 14px;
+    }
+
+    
+  #fechaF{
       color: #555;
         font-weight: bold;
         font-size: 14px;
@@ -300,7 +315,9 @@ body {
     margin-left: 20px;
   }
 
-  
+  #diabetes, #hipertension{
+    margin-bottom: 2px;
+  }
 
     .btn-save {
       display: flex;
@@ -325,18 +342,7 @@ body {
   border-style: none;
   }
 
-  .guardarMed{
-    background-color: #04BAFC;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    padding: 3px 20px;
-    font-size: 15px;
-    font-family: 'Jost', sans-serif;
-    border-radius: 5px;
-    text-decoration: none;
-    margin-left: 1%;
-  }
+
 
   .cancelar:hover, .guardarPac:hover{
     color: white;
@@ -378,7 +384,7 @@ text-decoration: none;  }
   margin-right: 3%;        
 }
 
-.guardarPac{
+#guardPac, .guardarPac,.guardarMed, #actualizarPerfil{
 background-color: #04BAFC;
 color: #fff;
 border: none;
@@ -403,7 +409,10 @@ margin-left: 1%;
     }
   }
 
-   
+
+
+  
+  
 
    
   
