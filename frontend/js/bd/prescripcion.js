@@ -286,12 +286,20 @@ let crearRecambio = async () => {
   .catch(error => {
   
   });
-
+if(drenaje<2000 && liquido=="Turbio"){
+  document.getElementById("urgente").innerText="Está drenando menos líquido de lo debido y el líquido tiene una característica turbia, ¡por favor consulte un profesional de la salud!";
+  $('#successModal').modal('show');
+}
+else{
   if(drenaje<2000){
+    document.getElementById("urgente").innerText="Está drenando menos líquido de lo debido, ¡por favor consulte un profesional de la salud!";
     $('#successModal').modal('show');
   }
+  if(liquido=="Turbio"){
+  document.getElementById("urgente").innerText="El líquido tiene una característica turbia, ¡por favor consulte un profesional de la salud!";
+  $('#successModal').modal('show');}
   }
-
+}
 
 
   let guardarRecambio=async(event)=>{
@@ -339,10 +347,28 @@ let crearRecambio = async () => {
     })
     .then(response => {
       if (response.ok) {
-      if(drenaje<2000){
-         $('#modal2').modal('show');
-      }else
-      $('#successModal').modal('show');
+        console.log(drenaje);
+        console.log(liquidoSelect);
+        console.log(drenaje<2000 || liquidoSelect=="Turbio");
+        if(drenaje<2000 || liquidoSelect=="Turbio"){
+          console.log(drenaje<2000 && liquidoSelect=="Turbio");
+          if(drenaje<2000 && liquidoSelect=="Turbio"){
+            console.log("PASO EL AGREGAR");
+            document.getElementById("urgente").innerText="Está drenando menos líquido de lo debido y el líquido tiene una característica turbia, ¡por favor consulte un profesional de la salud!";
+            $('#modal2').modal('show');
+          }
+          else{
+            if(drenaje<2000){
+              document.getElementById("urgente").innerText="Está drenando menos líquido de lo debido, ¡por favor consulte un profesional de la salud!";
+              $('#modal2').modal('show');
+            }
+            if(liquidoSelect=="Turbio"){
+            document.getElementById("urgente").innerText="El líquido tiene una característica turbia, ¡por favor consulte un profesional de la salud!";
+            $('#modal2').modal('show');}
+            }
+        }
+     else{
+      $('#successModal').modal('show');}
 
       } else {
         $('#modal3').modal('show');
@@ -434,9 +460,21 @@ for (let i = 0; i < inputRadios.length; i++) {
     })
     .then(response => {
       if (response.ok) {
-      if(drenaje<2000){
-         $('#modal2').modal('show');
-      }else
+        if(drenaje<2000 || liquidoSelect=="Turbio"){
+          if(drenaje<2000 && liquidoSelect=="Turbio"){
+            document.getElementById("urgente").innerText="Está drenando menos líquido de lo debido y el líquido tiene una característica turbia, ¡por favor consulte un profesional de la salud!";
+            $('#modal2').modal('show');
+          }
+          else{
+            if(drenaje<2000){
+              document.getElementById("urgente").innerText="Está drenando menos líquido de lo debido, ¡por favor consulte un profesional de la salud!";
+              $('#modal2').modal('show');
+            }
+            if(liquidoSelect=="Turbio"){
+            document.getElementById("urgente").innerText="El líquido tiene una característica turbia, ¡por favor consulte un profesional de la salud!";
+            $('#modal2').modal('show');}
+            }
+        }else
       $('#successModal').modal('show');
 
       } else {
