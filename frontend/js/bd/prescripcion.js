@@ -347,13 +347,10 @@ else{
     })
     .then(response => {
       if (response.ok) {
-        console.log(drenaje);
-        console.log(liquidoSelect);
-        console.log(drenaje<2000 || liquidoSelect=="Turbio");
         if(drenaje<2000 || liquidoSelect=="Turbio"){
           console.log(drenaje<2000 && liquidoSelect=="Turbio");
           if(drenaje<2000 && liquidoSelect=="Turbio"){
-            console.log("PASO EL AGREGAR");
+            
             document.getElementById("urgente").innerText="Está drenando menos líquido de lo debido y el líquido tiene una característica turbia, ¡por favor consulte un profesional de la salud!";
             $('#modal2').modal('show');
           }
