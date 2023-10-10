@@ -138,7 +138,6 @@ p{
   background: #04BAFC;
   text-align: center;
   align-items: center;
-  display: flex;
   border-radius: 60px 60px 0px 0px;
-  height: 4em;
+  height: 5em;
 }
