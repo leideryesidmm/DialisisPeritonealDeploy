@@ -239,7 +239,7 @@ body {
         content: "";
       }
     
-      #data, #asq {
+      #data {
         color: #555;
         font-weight: bold;
         font-size: 14px;
