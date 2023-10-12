@@ -679,9 +679,10 @@ let inhabilitarCuidador=async()=>{
   var botonActualizar = document.getElementById("inhabilitar");
             botonActualizar.style.background = "gray";
             botonActualizar.disabled = true;
+            if(document.getElementById("cambiar")!=null){
             var botonCambiar = document.getElementById("cambiar");
             botonCambiar.style.background = "gray";
-            botonCambiar.disabled = true;
+            botonCambiar.disabled = true;}
             var botonNuevo = document.getElementById("nuevo");
             botonNuevo.style.background = "gray";
             botonNuevo.disabled = true;
