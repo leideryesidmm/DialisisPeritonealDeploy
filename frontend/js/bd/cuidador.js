@@ -235,7 +235,7 @@ let cuidadorPorPaciente=async()=>{
     };
 
     let listaParentesco = async () => {
-      const peticion = await fetch(localStorage.getItem("servidorAPI") + "Prueba/ListParentesco", {
+      const peticion = await fetch(localStorage.getItem("servidorAPI") + "paciente/ListParentesco", {
         method: "GET",
         headers: {
           "Accept": "application/json",
@@ -262,7 +262,7 @@ let cuidadorPorPaciente=async()=>{
     
 
     let listarParentesco = async () => {
-      const peticion = await fetch(localStorage.getItem("servidorAPI") + "Prueba/ListParentesco", {
+      const peticion = await fetch(localStorage.getItem("servidorAPI") + "paciente/ListParentesco", {
         method: "GET",
         headers: {
           "Accept": "application/json",

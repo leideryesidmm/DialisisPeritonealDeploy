@@ -283,7 +283,7 @@ let listarEspecialidad = async () => {
         const medicoInDto = {
   
         nombre : nombreEncriptado,
-        tipo_documento:tipoDocumentoEncriptado,
+        tipoDocumento:tipoDocumentoEncriptado,
         cedula : documentoEncriptado,
         celular : telefonoEncriptado,
         contrasenia:documentoEncriptado,
@@ -405,7 +405,7 @@ console.log(medico);
 
 
   const selectDocumento = document.getElementById('selectedDocumento');
-  const descripcionDocumento= CryptoJS.AES.decrypt(medico.tipo_documento, 'clave_secreta').toString(CryptoJS.enc.Utf8);;
+  const descripcionDocumento= CryptoJS.AES.decrypt(medico.tipoDocumento, 'clave_secreta').toString(CryptoJS.enc.Utf8);;
   console.log(descripcionDocumento);
   
   Array.from(selectDocumento.options).forEach((option, index) => {
@@ -551,7 +551,7 @@ let actualizarMedico = async(event) => {
 
 
   medicoInDto={
-    nombre:nombreEncriptado, celular:telefonoEncriptado, correo:correoEncriptado,tipo_documento:tipo_documentoEncriptado,especialidad:especialidad,
+    nombre:nombreEncriptado, celular:telefonoEncriptado, correo:correoEncriptado,tipoDocumento:tipo_documentoEncriptado,especialidad:especialidad,
     cedula:documento, profesion:profesionEncriptada, activo:activo, contrasenia:contrasenia,foto:foto,tipoUsuario:tipoUsuario
   }
 

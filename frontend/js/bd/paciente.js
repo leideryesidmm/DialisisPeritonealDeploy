@@ -191,7 +191,7 @@ console.log(paciente)
     let direccionDesencriptada= CryptoJS.AES.decrypt(paciente.direccion,'clave_secreta').toString(CryptoJS.enc.Utf8);
     let ocupacionDesencriptada= CryptoJS.AES.decrypt(paciente.ocupacion,'clave_secreta').toString(CryptoJS.enc.Utf8);
     let correoDesencriptada= CryptoJS.AES.decrypt(paciente.correo,'clave_secreta').toString(CryptoJS.enc.Utf8);
-    let tipoDocumentoDesencriptada= CryptoJS.AES.decrypt(paciente.tipo_documento,'clave_secreta').toString(CryptoJS.enc.Utf8);
+    let tipoDocumentoDesencriptada= CryptoJS.AES.decrypt(paciente.tipoDocumento,'clave_secreta').toString(CryptoJS.enc.Utf8);
     let epsDesencriptada= paciente.eps.nombre;
     let peso= paciente.peso;
     let pesoSeco=paciente.pesoSeco;
@@ -201,7 +201,7 @@ console.log(paciente)
     let nacimiento=paciente.fechaNacimiento.split('T');
     let fechaNacimiento=nacimiento[0];
     let fecha=new Date(fechaNacimiento);
-    let fechaRegistro=paciente.fecha_registro.split('T');
+    let fechaRegistro=paciente.fechaRegistro.split('T');
     let fecha_registro=fechaRegistro[0];
     let fecha_registrado=new Date(fecha_registro);
     let diabetes=paciente.diabetes;
@@ -212,7 +212,7 @@ console.log(paciente)
     let tipo_documento=tipoDocumentoDesencriptada;
 
   pacienteAct = {
-    nombre: nombreDesencriptado, cedula:cedula, celular: celularDesencriptado, direccion: direccionDesencriptada, eps: epsDesencriptada, peso: peso, pesoSeco: pesoSeco, tiposangre: tiposangre, rh: rh, altura: altura, nacimiento: fecha, diabetes: diabetes, hipertension: hipertension, ocupacion:ocupacion, correo:correo, tipo_documento:tipo_documento, fecha_registro:fecha_registrado
+    nombre: nombreDesencriptado, cedula:cedula, celular: celularDesencriptado, direccion: direccionDesencriptada, eps: epsDesencriptada, peso: peso, pesoSeco: pesoSeco, tiposangre: tiposangre, rh: rh, altura: altura, nacimiento: fecha, diabetes: diabetes, hipertension: hipertension, ocupacion:ocupacion, correo:correo, tipoDocumento:tipo_documento, fecha_registro:fecha_registrado
 
   }
   return pacienteAct;
@@ -416,7 +416,7 @@ console.log(pacienteActual);
 }
 
 let listaEps = async () => {
-  const peticion = await fetch(localStorage.getItem("servidorAPI") + "Prueba/ListEps", {
+  const peticion = await fetch(localStorage.getItem("servidorAPI") + "paciente/ListEps", {
     method: "GET",
     headers: {
       "Accept": "application/json",
@@ -501,7 +501,7 @@ let actualizarPaciente = async (event) => {
   let correo=document.getElementById("correo").value;
   let estatura=paciente.altura;
   var diabetes = paciente.diabetes;
-  var fecha_registro=paciente.fecha_registro;
+  var fecha_registro=paciente.fechaRegistro;
      var hipertension = paciente.hipertension;
      let selectedOption = selectedEps.options[selectedEps.selectedIndex];
   let eps = selectedOption.value;
@@ -520,13 +520,13 @@ let actualizarPaciente = async (event) => {
     activo:true,
     cedula:cedulaEncriptada,
     tipoSangre:paciente.tipoSangre,
-    tipo_documento:CryptoJS.AES.encrypt(tipo_documento, 'clave_secreta').toString(),
+    tipoDocumento:CryptoJS.AES.encrypt(tipo_documento, 'clave_secreta').toString(),
     rh:paciente.rh,
     contrasenia:paciente.contrasenia,
     altura:estatura,
     cambio_contrasenia:paciente.cambio_contrasenia,
     diabetes:diabetes,
-    fecha_registro:fecha_registro,
+    fechaRegistro:fecha_registro,
     hipertension:hipertension,
     eps: parseInt(eps,10)
   };
@@ -536,12 +536,12 @@ else{
   let fechaNacimiento=paciente.fechaNacimiento;
   let telefono = paciente.celular;
   let direccion = paciente.direccion;
-  let tipo_documento= paciente.tipo_documento;
+  let tipo_documento= paciente.tipoDocumento;
   let peso = document.getElementById("peso").value;
   let pesoseco=document.getElementById("pesoseco").value;
   let ocupacion=paciente.ocupacion;
   let correo=paciente.correo;
-  let fecha_registro=paciente.fecha_registro;
+  let fecha_registro=paciente.fechaRegistro;
   let cambiocontrasenia=paciente.cambio_contrasenia;
   let estatura=document.getElementById("estatura").value;
   let eps = paciente.eps.idEps;
@@ -560,11 +560,11 @@ else{
     ocupacion: ocupacion,
     cambio_contrasenia:cambiocontrasenia,
     correo: correo,
-    fecha_registro:fecha_registro,
+    fechaRegistro:fecha_registro,
     activo:true,
     cedula:cedulaEncriptada,
     tipoSangre:paciente.tipoSangre,
-    tipo_documento:tipo_documento,
+    tipoDocumento:tipo_documento,
     rh:paciente.rh,
     contrasenia:paciente.contrasenia,
     altura:parseInt(estatura,10),

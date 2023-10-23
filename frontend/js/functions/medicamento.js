@@ -98,7 +98,7 @@ if(usuario=="paciente"){
       '<div class="via">' +
       "<p><strong>Vía administración:</strong></p>" +
       '<p class="via_administracion" id="via_administracion">' +
-      medicamento.via_Administracion +
+      medicamento.viaAdministracion +
       "</div>" +
       '<div class="concentration">' +
       "<p><strong>Concentración:</strong></p>" +

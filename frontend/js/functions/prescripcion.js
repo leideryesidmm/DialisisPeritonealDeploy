@@ -437,8 +437,11 @@ let mostrarPrescripcion= async (prescripcion, fecha, recambios) => {
         +'<div class="row">'
         +`    <div class="col-2 estado" style="`;
         if(recambios[cont]!=null){
+          console.log(decodeURIComponent(CryptoJS.AES.decrypt(recambios[cont].caracteristicaLiquido, 'clave_secreta').toString(CryptoJS.enc.Utf8))!="Turbio")
+          console.log(decodeURIComponent(CryptoJS.AES.decrypt(recambios[cont].caracteristicaLiquido, 'clave_secreta').toString(CryptoJS.enc.Utf8)))
+          console.log(recambios[cont])
           estado="H";
-            msg+='background-color:rgb(11, 158, 11);">';
+            msg+=`${parseInt(CryptoJS.AES.decrypt(recambios[cont].drenajeDialisis, 'clave_secreta').toString(CryptoJS.enc.Utf8))>=parseInt(CryptoJS.AES.decrypt(recambios[cont].liquidoEntrante, 'clave_secreta').toString(CryptoJS.enc.Utf8))&&decodeURIComponent(CryptoJS.AES.decrypt(recambios[cont].caracteristicaLiquido, 'clave_secreta').toString(CryptoJS.enc.Utf8))!="Turbio"?'background-color:rgb(11, 158, 11);">':'background-color:#f73c3c;">'}`;
             if(fecha.getFullYear() === hoy.getFullYear() &&
             fecha.getMonth() === hoy.getMonth() &&
             (fecha.getDate() === hoy.getDate()||fecha.getDate() === hoy.getDate()-1)){
@@ -485,7 +488,7 @@ let mostrarPrescripcion= async (prescripcion, fecha, recambios) => {
               fecha.getMonth() === hoy.getMonth() &&
               fecha.getDate() < (hoy.getDate()-1))){
                 estado="SH"
-                msg+='background-color:#f73c3c;">';
+                msg+='background-color:slategray;">';
             }else{
                 if(fecha.getFullYear() === hoy.getFullYear() &&
                 fecha.getMonth() === hoy.getMonth() &&
@@ -511,12 +514,12 @@ let mostrarPrescripcion= async (prescripcion, fecha, recambios) => {
         +'            <h6 id="vertical">'
         +estado
         +'            </h6>'
-        +'            <div class="tooltip-container">'+
+        +'            <div class="tooltip-container"><a style="cursor:pointer" onclick="verinfo()">'+
         '<span class="tooltip-text" data-toggle="tooltip" data-placement="top" title="H: Hecho&#10;P: Pendiente&#10;SH: Sin hacer&#10;F: Futuro">'+
       '<svg class="icon-hover" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">'
         +'                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>'
         +'                <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>'
-        +'              </svg></span></div>'
+        +'              </svg></span></a></div>'
         +'        </div>'   
         +'    </div>'
         msg+=datos1[cont];
@@ -539,14 +542,17 @@ let verRecambio=async(idRecambio)=>{
   try {
   let recambio=JSON.parse(localStorage.getItem("recambios"))[idRecambio];
 
-  document.getElementById("inicio").innerText=recambio.hora_ini.replace("T", " ");
-  document.getElementById("final").innerText=recambio.hora_fin.replace("T", " ");
+  document.getElementById("inicio").innerText=recambio.horaIni.replace("T", " ");
+  document.getElementById("final").innerText=recambio.horaFin.replace("T", " ");
+  document.getElementById("liquidoEntrante").innerText=decodeURIComponent(CryptoJS.AES.decrypt(recambio.liquidoEntrante, 'clave_secreta').toString(CryptoJS.enc.Utf8))+" ml";
   document.getElementById("drenaje").innerText=decodeURIComponent(CryptoJS.AES.decrypt(recambio.drenajeDialisis, 'clave_secreta').toString(CryptoJS.enc.Utf8))+" ml";
   document.getElementById("concentracion").innerText=recambio.recambio.concentracion+"%";
   document.getElementById("estadoOrificio").innerText=decodeURIComponent(CryptoJS.AES.decrypt(recambio.orificioSalida, 'clave_secreta').toString(CryptoJS.enc.Utf8));
   document.getElementById("caracteristicaliquido").innerText=decodeURIComponent(CryptoJS.AES.decrypt(recambio.caracteristicaLiquido, 'clave_secreta').toString(CryptoJS.enc.Utf8));
-  
-    
+  console.log("hasta aqui")
+  let fecha=formatearFecha(new Date(localStorage.getItem("fecha_real")))
+  console.log(fecha)
+  document.getElementById("successModalLabel").innerText="Recambio de la fecha: "+fecha;
   $('#verRecambio').modal('show');
   } catch (error) {
   }
@@ -575,16 +581,18 @@ let tablaRecambios=async(recambios)=>{
   +'    <th>Inicio</th>'
   +'    <th>Final</th>'
   +'    <th>Concentración</th>'
+  +'    <th>Líquido Entrante</th>'
   +'    <th>Drenaje</th>'
   +'  </tr>'
   +'</thead>'
   +'<tbody id="seguimientoData">';
   recambios.forEach(recambio => {
   msg+='  <tr>'
-  +'    <td style="font-size:70%">'+recambio.hora_ini.split("T")[0]+' \n '+recambio.fecha.split("T")[1]+'</th>'
-  +'    <td style="font-size:70%">'+recambio.hora_fin.split("T")[0]+' \n '+recambio.fecha.split("T")[1]+'</th>'
-  +'    <td style="font-size:90%">'+recambio.recambio.concentracion+'</th>'
-  +'    <td style="font-size:90%">'+CryptoJS.AES.decrypt(recambio.drenajeDialisis, 'clave_secreta').toString(CryptoJS.enc.Utf8);+'</th>'
+  +'    <td style="font-size:70%">'+recambio.horaIni.split("T")[0]+' \n '+recambio.fecha.split("T")[1]+'</th>'
+  +'    <td style="font-size:70%">'+recambio.horaFin.split("T")[0]+' \n '+recambio.fecha.split("T")[1]+'</th>'
+  +'    <td style="font-size:90%">'+recambio.recambio.concentracion+' %</th>'
+  +'    <td style="font-size:90%">'+CryptoJS.AES.decrypt(recambio.liquidoEntrante, 'clave_secreta').toString(CryptoJS.enc.Utf8)+' ml</th>'
+  +'    <td style="font-size:90%">'+CryptoJS.AES.decrypt(recambio.drenajeDialisis, 'clave_secreta').toString(CryptoJS.enc.Utf8)+' ml</th>'
   +'  </tr>';
   });
   
@@ -636,7 +644,7 @@ let tablaVisitas=async(visitas)=>{
        <td style="font-size:90%">${visita.farmacia?"Si":"No"}</td>
        <td style="font-size:90%">${visita.entrenamiento?"Si":"No"}</td>
        <td style="font-size:90%">${visita.reentrenamiento?"Si":"No"}</td>
-       <td style="font-size:90%">${visita.visita_domiciliaria?"Si":"No"}</td>
+       <td style="font-size:90%">${visita.visitaDomiciliaria?"Si":"No"}</td>
       </tr>`;
     
     
@@ -686,7 +694,7 @@ let tablaVisitas=async(visitas)=>{
     msg+=` <tr>
       <td style="font-size:90%">${chequeo.cita.fecha.split("T")[0]}</td>
        <td style="font-size:90%">${chequeo.peso} Kgs.</td>
-       <td style="font-size:90%">${chequeo.peso_seco} Kgs.</td>
+       <td style="font-size:90%">${chequeo.pesoSeco} Kgs.</td>
        <td style="font-size:90%">${chequeo.tensionArterial} mm Hg</td>
        <td style="font-size:90%">${chequeo.hemoglobina} g/L</td>
        <td style="font-size:90%">${chequeo.colesterolTotal} mg/dL</td>
@@ -905,7 +913,7 @@ let mostrarPrescripcionAntiguaMedico=async(prescripcion)=>{
   localStorage.setItem("selectPrescripcion", JSON.stringify(prescripcion));
   let ordinal=["Primer","Segundo", "Tercer", "Cuarto", "Quinto"];
   let msg=`<div class="row" style="display:flex">
-  <div class="col-2"><a onclick="volver()" class="btn btn-primary">Volver</a></div>
+  <div class="col-2"><a onclick="volver()" class="btn btn-primary" id="btnVolver">Volver</a></div>
   <div class="col-8"><h4 style="text-align:center">Prescripción antigua</h4></div></div><br>
                 <div class="row" style="margin:0 auto;">
                     <div class="col-sm-6">
@@ -1459,7 +1467,7 @@ let mostrarChequeo=async()=>{
           <div class="col-6 p-3">
           <div class="row mt-2 border p-2">
           <div class="centrar-label col-6"><label class="form-label" for="peso_seco">Peso seco:</label></div>
-          <div class="col-6"><input class="form-control" type="text" name="chequeo" id="peso_seco" disabled value="`+chequeo.peso_seco+` Kgs. "></input></div>
+          <div class="col-6"><input class="form-control" type="text" name="chequeo" id="peso_seco" disabled value="`+chequeo.pesoSeco+` Kgs. "></input></div>
           </div>
           <div class="row mt-2 border p-2">
           <div class="centrar-label col-6"><label class="form-label" for="hemoglobina"> Hemoglobina:</label></div>
@@ -1522,7 +1530,7 @@ let mostrarVisita=async()=>{
   let farmacia=visita.farmacia;
   let entrenamiento=visita.entrenamiento;
   let reentrenamiento=visita.reentrenamiento;
-  let visitadomiciliaria=visita.visita_domiciliaria;
+  let visitadomiciliaria=visita.visitaDomiciliaria;
   msg +=
           `<div class="modal-dialog">
           <div class="modal-content">
@@ -1654,48 +1662,48 @@ else{
           '<div class="especialistas"><br><form id="checkboxForm">' +
           '<div class="row">' +
           '<div class="col-6"><img src="../img/nefrologo.png" alt="Nefrolofía" width="50" height="55" />&nbsp<input class="form-check-input" type="checkbox" name="visita" value="nefrologia" id="nefrologia">' +
-          '  <label class="form-check-label" for="flexCheckDefault">' +
+          '  <label class="form-check-label" for="nefrologia">' +
           '    Nefrólogo' +
           '  </label>' +
           '</div>' +
           '<div class="col-6"><img src="../img/enfermera.png" alt="Enfermería" width="50" height="55" />&nbsp<input class="form-check-input" type="checkbox" name="visita" value="enfermeria" id="enfermeria">' +
-          '  <label class="form-check-label" for="flexCheckDefault">' +
+          '  <label class="form-check-label" for="enfermeria">' +
           '    Enfermera' +
           '  </label>' +
           '</div>' +
           '</div><br>' +
           '<div class="row">' +
           '<div class="col-6"><img src="../img/nutricion.png" alt="Nutrición" width="50" height="55" />&nbsp<input class="form-check-input" type="checkbox" name="visita" value="nutricion" id="nutricion">' +
-          '  <label class="form-check-label" for="flexCheckDefault">' +
+          '  <label class="form-check-label" for="nutricion">' +
           '    Nutricionista' +
           '  </label>' +
           '</div>' +
           '<div class="col-6"><img src="../img/psicologo.png" alt="Psicología" width="50" height="55" />&nbsp<input class="form-check-input" type="checkbox" name="visita" value="psicologia" id="psicologia">' +
-          '  <label class="form-check-label" for="flexCheckDefault">' +
+          '  <label class="form-check-label" for="psicologia">' +
           '    Psicólogo' +
           '  </label>' +
           '</div>' +
           '</div><br>' +
           '<div class="row">' +
           '<div class="col-6"><img src="../img/asistencia.png" alt="Trabajo social" width="50" height="55" />&nbsp<input class="form-check-input" type="checkbox" name="visita" value="trabajoSocial" id="trabajoSocial">' +
-          '  <label class="form-check-label" for="flexCheckDefault">' +
+          '  <label class="form-check-label" for="trabajoSocial">' +
           '    Trabajador Social' +
           '  </label>' +
           '</div>' +
           '<div class="col-6"><img src="../img/admision.png" alt="Auxiliar de admisiones" width="50" height="55" />&nbsp<input class="form-check-input" type="checkbox" name="visita" value="auxiliarAdmisiones" id="auxiliarAdmisiones">' +
-          '  <label class="form-check-label" for="flexCheckDefault">' +
+          '  <label class="form-check-label" for="auxiliarAdmisiones">' +
           '    Aux. de Admisiones' +
           '  </label>' +
           '</div>' +
           '</div><br>' +
           '<div class="row">' +
           '<div class="col-6"><img src="../img/farmacia.png" alt="farmacia" width="50" height="55" />&nbsp<input class="form-check-input" type="checkbox" name="visita" value="farmacia" id="farmacia">' +
-          '  <label class="form-check-label" for="flexCheckDefault">' +
+          '  <label class="form-check-label" for="farmacia">' +
           '    Farmacia' +
           '  </label>' +
           '</div>' +
           '<div class="col-6"><img src="../img/entrenamiento.png" alt="entrenamiento" width="50" height="55" />&nbsp<input class="form-check-input" type="checkbox" name="visita" value="entrenamiento" id="entrenamiento">' +
-          '  <label class="form-check-label" for="flexCheckDefault">' +
+          '  <label class="form-check-label" for="entrenamiento">' +
           '    Entrenamiento' +
           '  </label>' +
           '</div>' +
@@ -1703,12 +1711,12 @@ else{
 
           '<div class="row">' +
           '<div class="col-6"><img src="../img/reentrenamiento.png" alt="reentrenamiento" width="50" height="55" />&nbsp<input class="form-check-input" type="checkbox" name="visita" value="reentrenamiento" id="reentrenamiento">' +
-          '  <label class="form-check-label" for="flexCheckDefault">' +
+          '  <label class="form-check-label" for="reentrenamiento">' +
           '    Reentrenamiento' +
           '  </label>' +
           '</div>' +
-          '<div class="col-6"><img src="../img/casa.png" alt="visitadomiciliaria" width="50" height="55" />&nbsp<input class="form-check-input" type="checkbox" name="visita" value="visitadomiciliaria" id="visitadomiciliaria">' +
-          '  <label class="form-check-label" for="flexCheckDefault">' +
+          '<div class="col-6"><img src="../img/casa.png" alt="visitadomiciliaria" width="50" height="55" />&nbsp<input class="form-check-input" type="checkbox" name="visita" value="visitaDomiciliaria" id="visitaDomiciliaria">' +
+          '  <label class="form-check-label" for="visitaDomiciliaria">' +
           '    Visita Domiciliaria' +
           '  </label>' +
           '</div>' +
@@ -1759,7 +1767,7 @@ else{
   '</div>' +
   '<div class="row mt-2 border p-2">' +
   '<div class="centrar-label col-6"><label class="form-label" for="tensionArterial">Tensión Arterial:</label></div>' +
-  '<div class="col-6"><input class="form-control" placeholder="Tensión en mm Hg" type="number" name="chequeo" id="tensionArterial" /></div>' +
+  '<div class="col-6"><input class="form-control" placeholder="Tensión en mm Hg" type="text" name="chequeo" id="tensionArterial" /></div>' +
   '</div>' +
   '<div class="row mt-2 border p-2">' +
   '<div class="centrar-label col-6"><label class="form-label" for="colesterolTotal">Colesterol Total:</label></div>' +
@@ -1789,7 +1797,7 @@ else{
   '<div class="col-6 p-3">' +
   '<div class="row mt-2 border p-2">' +
   '<div class="centrar-label col-6"><label class="form-label" for="pesoSeco">Peso seco:</label></div>' +
-  '<div class="col-6"><input class="form-control" type="number" name="chequeo" id="peso_seco" /></div>' +
+  '<div class="col-6"><input class="form-control" type="number" name="chequeo" id="pesoSeco" /></div>' +
   '</div>' +
   '<div class="row mt-2 border p-2">' +
   '<div class="centrar-label col-6"><label class="form-label" for="hemoglobina"> Hemoglobina:</label></div>' +
@@ -1864,7 +1872,7 @@ let editarChequeo=async()=>{
           </div>
           <div class="row border p-2">
           <div class="centrar-label col-6"><label class="form-label" for="tensionArterial">Tensión Arterial:</label></div>
-          <div class="col-6"><input class="form-control" type="number" name="chequeo" id="editarTensionArterial" value="`+chequeo.tensionArterial+`"></input></div>
+          <div class="col-6"><input class="form-control" type="text" name="chequeo" id="editarTensionArterial" value="`+chequeo.tensionArterial+`"></input></div>
           </div>
           <div class="row mt-2 border p-2">
           <div class="centrar-label col-6"><label class="form-label" for="colesterolTotal">Colesterol Total</label></div>
@@ -1894,7 +1902,7 @@ let editarChequeo=async()=>{
           <div class="col-6 p-3">
           <div class="row border p-2">
           <div class="centrar-label col-6"><label class="form-label" for="peso_seco"> Peso seco:</label></div>
-          <div class="col-6"><input class="form-control" type="number" name="chequeo" id="editarPesoSeco" value="`+chequeo.peso_seco+`"></input></div>
+          <div class="col-6"><input class="form-control" type="number" name="chequeo" id="editarPesoSeco" value="`+chequeo.pesoSeco+`"></input></div>
           </div>
           <div class="row border p-2">
           <div class="centrar-label col-6"><label class="form-label" for="hemoglobina"> Hemoglobina</label></div>
@@ -1950,7 +1958,7 @@ let editarVisita=async()=>{
   let farmacia=visita.farmacia;
   let entrenamiento=visita.entrenamiento;
   let reentrenamiento=visita.reentrenamiento;
-  let visitadomiciliaria=visita.visita_domiciliaria;
+  let visitadomiciliaria=visita.visitaDomiciliaria;
   msg +=
           `<div class="modal-dialog">
           <div class="modal-content">
@@ -1968,14 +1976,14 @@ let editarVisita=async()=>{
           <div class="col-6"><img src="../img/nefrologo.png" alt="Nefrología" width="50" height="55" />&nbsp
           ${nefrologia?
             `<input class="form-check-input" type="checkbox" name="visita" value="nefrologia" id="editarNefrologia" checked >`:`<input class="form-check-input" type="checkbox" name="visita" value="nefrologia" id="editarNefrologia" >`}
-            <label class="form-check-label" for="flexCheckDefault">
+            <label class="form-check-label" for="editarNefrologia">
               Nefrólogo
             </label>
           </div>
            <div class="col-6"><img src="../img/enfermera.png" alt="Enfermería" width="50" height="55" />&nbsp 
           ${enfermeria?
           `<input class="form-check-input" type="checkbox" name="visita" value="enfermeria" id="editarEnfermeria" checked>`:`<input class="form-check-input" type="checkbox" name="visita" value="enfermeria" id="editarEnfermeria" >`}
-            <label class="form-check-label" for="flexCheckDefault">
+            <label class="form-check-label" for="editarEnfermeria">
               Enfermera
             </label>
           </div>
@@ -1984,14 +1992,14 @@ let editarVisita=async()=>{
           <div class="col-6"><img src="../img/nutricion.png" alt="Nutrición" width="50" height="55" />&nbsp
           ${nutricion?
           `<input class="form-check-input" type="checkbox" name="visita" value="nutricion" id="editarNutricion" checked>`:`<input class="form-check-input" type="checkbox" name="visita" value="nutricion" id="editarNutricion" >`}
-            <label class="form-check-label" for="flexCheckDefault">
+            <label class="form-check-label" for="editarNutricion">
               Nutricionista
             </label>
           </div>
           <div class="col-6"><img src="../img/psicologo.png" alt="Psicología" width="50" height="55" />&nbsp
           ${psicologia?
             `<input class="form-check-input" type="checkbox" name="visita" value="psicologia" id="editarPsicologia" checked>`:`<input class="form-check-input" type="checkbox" name="visita" value="psicologia" id="editarPsicologia">`}
-            <label class="form-check-label" for="flexCheckDefault">
+            <label class="form-check-label" for="editarPsicologia">
               Psicólogo
             </label>
           </div>
@@ -2000,14 +2008,14 @@ let editarVisita=async()=>{
           <div class="col-6"><img src="../img/asistencia.png" alt="Trabajo social" width="50" height="55" />&nbsp
           ${trabajoSocial?
             `<input class="form-check-input" type="checkbox" name="visita" value="trabajoSocial" id="editarTrabajoSocial" checked>`:`<input class="form-check-input" type="checkbox" name="visita" value="trabajoSocial" id="editarTrabajoSocial">`}
-            <label class="form-check-label" for="flexCheckDefault">
+            <label class="form-check-label" for="editarTrabajoSocial">
               Trabajador Social
             </label>
           </div>
           <div class="col-6"><img src="../img/admision.png" alt="Auxiliar de admisiones" width="50" height="55" />&nbsp
           ${auxiliarAdmisiones?
             `<input class="form-check-input" type="checkbox" name="visita" value="auxiliarAdmisiones" id="editarAuxiliarAdmisiones" checked>`:`<input class="form-check-input" type="checkbox" name="visita" value="auxiliarAdmisiones" id="editarAuxiliarAdmisiones">`}
-            <label class="form-check-label" for="flexCheckDefault">
+            <label class="form-check-label" for="editarAuxiliarAdmisiones">
               Aux. de Admisiones
             </label>
           </div>
@@ -2016,14 +2024,14 @@ let editarVisita=async()=>{
           <div class="col-6"><img src="../img/farmacia.png" alt="farmacia" width="50" height="55" />&nbsp
           ${farmacia?
             `<input class="form-check-input" type="checkbox" name="visita" value="farmacia" id="editarFarmacia" checked >`:`<input class="form-check-input" type="checkbox" name="visita" value="farmacia" id="editarFarmacia">`}
-            <label class="form-check-label" for="flexCheckDefault">
+            <label class="form-check-label" for="editarFarmacia">
               Farmacia
             </label>
           </div>
           <div class="col-6"><img src="../img/entrenamiento.png" alt="entrenamiento" width="50" height="55" />&nbsp
           ${entrenamiento?
             `<input class="form-check-input" type="checkbox" name="visita" value="entrenamiento" id="editarEntrenamiento" checked >`:`<input class="form-check-input" type="checkbox" name="visita" value="entrenamiento" id="editarEntrenamiento">`}
-            <label class="form-check-label" for="flexCheckDefault">
+            <label class="form-check-label" for="editarEntrenamiento">
             Entrenamiento
             </label>
           </div>
@@ -2032,14 +2040,14 @@ let editarVisita=async()=>{
           <div class="col-6"><img src="../img/reentrenamiento.png" alt="reentrenamiento" width="50" height="55" />&nbsp
           ${reentrenamiento?
             `<input class="form-check-input" type="checkbox" name="visita" value="reentrenamiento" id="editarReentrenamiento" checked >`:`<input class="form-check-input" type="checkbox" name="visita" value="reentrenamiento" id="editarReentrenamiento">`}
-            <label class="form-check-label" for="flexCheckDefault">
+            <label class="form-check-label" for="editarReentrenamiento">
             Reentrenamiento
             </label>
           </div>
           <div class="col-6"><img src="../img/casa.png" alt="visita domiciliaria" width="50" height="55" />&nbsp
           ${visitadomiciliaria?
-            `<input class="form-check-input" type="checkbox" name="visita" value="visitadomiciliaria" id="editarVisitaDomiciliaria" checked >`:`<input class="form-check-input" type="checkbox" name="visita" value="visitadomiciliaria" id="editarVisitaDomiciliaria">`}
-            <label class="form-check-label" for="flexCheckDefault">
+            `<input class="form-check-input" type="checkbox" name="visita" value="visitaDomiciliaria" id="editarVisitaDomiciliaria" checked >`:`<input class="form-check-input" type="checkbox" name="visita" value="visitadomiciliaria" id="editarVisitaDomiciliaria">`}
+            <label class="form-check-label" for="editarVisitaDomiciliaria">
             Visita Domiciliaria
             </label>
           </div>
@@ -2058,4 +2066,6 @@ let editarVisita=async()=>{
           $("#editarVisita").modal("show");
 }
 
-
+function verinfo() {
+  $("#info").modal("show");
+}
