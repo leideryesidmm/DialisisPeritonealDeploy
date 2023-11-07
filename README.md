@@ -40,9 +40,9 @@ ___
 ### Autores
 #### Proyecto desarrollado por:
 
-- [Jheyner Alexander Lobo] (<jheyneralexanderld@ufps.edu.co>).
-- [Leider Yesid Martinez] (<leideryesidmm@ufps.edu.co>).
-- [Matilde Alexandra Arévalo] (<matildealexandraal@ufps.edu.co>)
+- [Jheyner Alexander Lobo](<jheyneralexanderld@ufps.edu.co>).
+- [Leider Yesid Martinez](<leideryesidmm@ufps.edu.co>).
+- [Matilde Alexandra Arévalo](<matildealexandraal@ufps.edu.co>)
 
 #### Directores:
 Director: Ingeniero de Sistemas. Mgc. en Ingeniería e Ingeniería de Sistemas y computación
