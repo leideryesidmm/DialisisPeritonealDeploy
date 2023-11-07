@@ -7,29 +7,32 @@
 
 ## Índice
 1. 📋[Descripción](#descripcion)
-2. [Estructura](#estructura)
-3. 💻[Tecnologías](#tecnologías)
-4. [Arquitectura](#arquitectura)
-5. [Despliegue](#despliegue)
-6. 🖥[Demo](#demo)
-7. 👫[Autores](#autores)
-8. 🏫[Institución Académica](#institución-académica)
+2. 💻[Tecnologías](#tecnologías)
+3. [Arquitectura](#arquitectura)
+4. [Despliegue](#despliegue)
+5. 🖥[Demo](#demo)
+6. 👫[Autores](#autores)
+7. 🏫[Institución Académica](#institución-académica)
 
 ### Descripción
 ___
-Este repositorio contiene el código fuente de la solución tecnológica desarrollada que es presentada como proyecto de grado, el cual tiene como propósito el apoyo de pacientes con ERC a través de la digitalización de los registros de díalisis peritoneal.
-
-### Estructura
-___
+Este repositorio contiene el código fuente de la solución tecnológica desarrollada que es presentada como proyecto de grado, el cual tiene como propósito el apoyo de pacientes con ERC.
 
 ### Tecnologías
 ___
 
 ### Arquitectura
 ___
+La solución tecnológica Mi Salud Renal tiene como objetivo principal disminuir la brecha de comunicación que hay entre los médicos y sus pacientes al momento de realizar la consulta médica. Además, se busca asegurar que los pacientes tengan un mayor control sobre su tratamiento, ya que actualmente resulta agotador y obsoleto llevar un registro de su análisis de tratamiento en un cuadernillo de papel. Para abordar este problema, se ha desarrollado un sistema basado en una arquitectura distribuida que consta de dos aplicaciones, una en el backend y otra en el frontend. Estas aplicaciones permiten a los usuarios llevar a cabo todas las operaciones necesarias para que los médicos puedan seguir de manera detallada el progreso del tratamiento de sus pacientes.
+
+La aplicación está basada en una arquitectura distribuida, que está conformada principalmente por dos capas independientes, llamadas backend y frontend. 
+
+[Arquiteura a alto nivel](https://imgur.com/a/uZtemv4)
+
 
 ### Despliegue
 ___
+
 
 ### Demo
 ___
