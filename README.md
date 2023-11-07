@@ -4,7 +4,6 @@
 <p align="center">
   <h1>Mi salud Renal</h1>
 </p>
-SOLUCIÓN TECNOLÓGICA QUE APOYE EL PROCESO DE DIÁLISIS PERITONEAL EN PACIENTES CON ENFERMEDAD RENAL CRÓNICA
 
 ## Índice
 1. [Descripción] (#descripcion)
@@ -17,34 +16,42 @@ SOLUCIÓN TECNOLÓGICA QUE APOYE EL PROCESO DE DIÁLISIS PERITONEAL EN PACIENTES
 8. [Institución Académica] (#institución-académica)
 
 ### Descripción
-
+___
 Este repositorio contiene el código fuente de la solución tecnológica desarrollada que es presentada como proyecto de grado  
 
 ### Estructura
+___
 
 ### Tecnologías
+___
 
 ### Arquitectura
+___
 
 ### Despliegue
+___
 
 ### Demo
+___
 
 ### Autores
+___
 
 #### Proyecto desarrollado por:
-[Jheyner Alexander Lobo] (<jheyneralexanderld@ufps.edu.co>).
-[Leider Yesid Martinez] (<leideryesidmm@ufps.edu.co>).
-[Matilde Alexandra Arévalo] (<matildealexandraal@ufps.edu.co>)
+___
+- [Jheyner Alexander Lobo] (<jheyneralexanderld@ufps.edu.co>).
+- [Leider Yesid Martinez] (<leideryesidmm@ufps.edu.co>).
+- [Matilde Alexandra Arévalo] (<matildealexandraal@ufps.edu.co>)
 
 #### Directores:
 Director: Ingeniero de Sistemas. Mgc. en Ingeniería e Ingeniería de Sistemas y computación
-[Milton Jesús Vera ](<miltonjesusvc@ufps.edu.co>)
+- [Milton Jesús Vera ](<miltonjesusvc@ufps.edu.co>)
 Co-directora: Enfermera, Mgc. en Enfermería
-[Sandra Milena Martínez](<sandramilenamr@ufps.edu.co>)
+- [Sandra Milena Martínez](<sandramilenamr@ufps.edu.co>)
 
 
 ### Institución Académica
+___
 Proyecto desarrollado como Proyecto de grado del  [Programa de Ingeniería de Sistemas] de la [Universidad Francisco de Paula Santander]
 
    [Programa de Ingeniería de Sistemas]:<https://ingsistemas.cloud.ufps.edu.co/>
