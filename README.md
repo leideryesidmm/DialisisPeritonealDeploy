@@ -29,7 +29,7 @@ La aplicación está basada en una arquitectura distribuida, que está conformad
 
 Ya que esta arquitectura tiene un enfoque de diseño que se utiliza para crear sistemas de software en los que los componentes o módulos del sistema se ejecutan en múltiples nodos de una red.
 
-![Arquitectura a alto nivel](imagenesReadme/arquitectura alto nivel.png)
+![Arquitectura a alto nivel](imagenesReadme/arquitectura_alto_nivel.png)
 
 ##### Vista de implementación
 La vista de implementación en arquitectura de software representa cómo las partes reutilizables del sistema se organizan físicamente en unidades intercambiables conocidas como componentes. Esta vista proporciona una representación detallada de cómo se traduce el diseño de software, que incluye clases y otros elementos, en componentes reales. Además, muestra las interfaces y las relaciones de dependencia entre estos componentes. En esencia, los componentes son las piezas de alto nivel reutilizables que sirven como bloques de construcción fundamentales para ensamblar sistemas de software.
