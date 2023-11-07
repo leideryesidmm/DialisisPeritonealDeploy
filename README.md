@@ -27,7 +27,7 @@ La solución tecnológica Mi Salud Renal tiene como objetivo principal disminuir
 
 La aplicación está basada en una arquitectura distribuida, que está conformada principalmente por dos capas independientes, llamadas backend y frontend. 
 
-![arquitectura alto nivel](https://postimg.cc/DSCw4Kxq)
+![arquitectura alto nivel](https://drive.google.com/file/d/1SqnlDJSN_0T436lxWar0kL_zMImyiADT/view?usp=drive_link)
 
 
 ### Despliegue
