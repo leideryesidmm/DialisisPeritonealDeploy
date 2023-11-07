@@ -6,14 +6,14 @@
 </p>
 
 ## Índice
-1. 📋[Descripción] (#descripcion)
-2. [Estructura] (#estructura)
-3. 💻[Tecnologías] (#tecnologías)
-4. [Arquitectura] (#arquitectura)
-5. [Despliegue] (#despliegue)
-6. 🖥[Demo] (#demo)
-7. 👫[Autores] (#autores)
-8. 🏫[Institución Académica] (#institución-académica)
+1. 📋[Descripción](#descripcion)
+2. [Estructura](#estructura)
+3. 💻[Tecnologías](#tecnologías)
+4. [Arquitectura](#arquitectura)
+5. [Despliegue](#despliegue)
+6. 🖥[Demo](#demo)
+7. 👫[Autores](#autores)
+8. 🏫[Institución Académica](#institución-académica)
 
 ### Descripción
 ___
