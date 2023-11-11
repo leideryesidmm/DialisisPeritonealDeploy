@@ -14,16 +14,16 @@ services:
         source: /var2/dockers-studentsprojects-deploy-0/DialisisPeritonealDeploy/frontend/
         target: /usr/share/nginx/html
     ports:
-      - 8103:80
+      - 8105:81
 
   backend:
     container_name: misaludrenal_backend
     image: openjdk:19
     working_dir: /code
     ports:
-      - 8104:8081
+      - 8106:8082
     environment:
-      - DATABASE_URL=jdbc:mysql://10.128.0.15:3306/db01student1151788?useSSL=false&serverTimezone=UTC
+      - DATABASE_URL=jdbc:mysql://10.128.0.15:3306/db01student1151785?useSSL=false&serverTimezone=UTC
       - DATABASE_USERNAME=student1151788
       - DATABASE_PASSWORD=matildealexandraal@ufps.edu.co
     volumes:

@@ -1,4 +1,4 @@
-let servidorAPI = "/misaludrenalbackend/";
+let servidorAPI = "/misaludrenalbackendtesting/";
 
 function isAuthenticated() {
   return localStorage.getItem("authenticated") === "true";
