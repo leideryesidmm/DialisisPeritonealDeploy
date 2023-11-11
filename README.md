@@ -1,4 +1,4 @@
-![image](https://github.com/leideryesidmm/DialisisPeritonealDeploy/assets/84026784/55e0c10e-00ec-440b-b42a-ae60e3904bdd)<p align="center">
+<p align="center">
   <h1>Solución Tecnológica que apoye el proceso de diálisis peritoneal en pacientes con Enfermedad Renal Crónica (ERC)</h1>
 </p>
 <p align="center">
