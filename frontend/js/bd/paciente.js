@@ -165,6 +165,7 @@ let listaPacientes = async () => {
       console.log(usuario);
 
       let cedulaEncriptada="";
+      console.log(await obtenerCedulasUsuarios(0,CryptoJS.AES.decrypt(decodeURIComponent(localStorage.getItem("cedulaPaciente")), "clave_secreta").toString(CryptoJS.enc.Utf8)))
       if(usuario=="medico" || usuario=="administrador"){
        cedulaEncriptada = await obtenerCedulasUsuarios(0,CryptoJS.AES.decrypt(decodeURIComponent(localStorage.getItem("cedulaPaciente")), "clave_secreta").toString(CryptoJS.enc.Utf8));
       console.log(cedulaEncriptada);}
@@ -174,6 +175,7 @@ let listaPacientes = async () => {
   let pacienteInDto = {
     cedula: cedulaEncriptada
   }
+  console.log(pacienteInDto)
     const peticion= await fetch(localStorage.getItem("servidorAPI")+"paciente/findPacienteByCedula",{
       method:"POST",
       headers: {

@@ -1,5 +1,5 @@
 
- let listarEps = async () => {
+let listarEps = async () => {
   const peticion = await fetch(localStorage.getItem("servidorAPI") + "paciente/ListEps", {
     method: "GET",
     headers: {
@@ -14,9 +14,12 @@
     const epss = await peticion.json();
     const optionSeleccionar = document.createElement('option');
     optionSeleccionar.textContent = "Seleccione...";
+    optionSeleccionar.selected=true;
+    optionSeleccionar.disabled=true;
     selectEps.appendChild(optionSeleccionar);
     epss.forEach(eps => {
       const option = document.createElement('option');
+
       option.value = eps.idEps;
       option.textContent = eps.nombre;
       selectEps.appendChild(option);
@@ -71,7 +74,7 @@ let crearPaciente=async(event)=> {
       console.log(tipoDocumento);
       var estatura = document.getElementById('estatura').value;
       var tiposangre = document.getElementById('tiposangre').value;
-      var rh = document.getElementById('rh').value;
+      var rh = document.getElementById('selectRh').value;
       var direccion = document.getElementById('direccion').value;
       var telefono = document.getElementById('telefono').value;
       var ocupacion = document.getElementById('ocupacion').value;
