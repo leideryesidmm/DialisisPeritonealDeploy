@@ -22,7 +22,7 @@ let nombreNavBar = async () => {
             const usuarioData = await response.json();
             console.log(usuarioData)
             const nombreUsuario = usuarioData.nombre;
-            nombreDecrypt = CryptoJS.AES.decrypt(nombreUsuario, 'clave_secreta').toString(CryptoJS.enc.Utf8);
+            nombreDecrypt = CryptoJS.AES.decrypt(nombreUsuario, cajaNegra).toString(CryptoJS.enc.Utf8);
             actualizarNombreEnNavbar(nombreDecrypt);
         }
     } catch (error) {

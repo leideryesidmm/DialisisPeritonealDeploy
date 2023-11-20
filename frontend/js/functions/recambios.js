@@ -207,7 +207,7 @@ let listRecambios = async (recambios) => {
             let hecho=false;
             fecha.recambios.forEach(recam=>{
               if(ciclo==0)
-                ultrafiltrado+=decodeURIComponent(CryptoJS.AES.decrypt(recam.drenajeDialisis, 'clave_secreta').toString(CryptoJS.enc.Utf8))-decodeURIComponent(CryptoJS.AES.decrypt(recam.liquidoEntrante, 'clave_secreta').toString(CryptoJS.enc.Utf8));
+                ultrafiltrado+=decodeURIComponent(CryptoJS.AES.decrypt(recam.drenajeDialisis, cajaNegra).toString(CryptoJS.enc.Utf8))-decodeURIComponent(CryptoJS.AES.decrypt(recam.liquidoEntrante, cajaNegra).toString(CryptoJS.enc.Utf8));
           })
             fecha.recambios.forEach(recam=>{
               console.log(recam)
@@ -218,9 +218,9 @@ let listRecambios = async (recambios) => {
                 msg+=`
               <td style="border:1px solid;background-color:#53DA44">${new Date(recam.fechaReal).toLocaleTimeString().substring(0,new Date(recam.fechaReal).toLocaleTimeString().length-3)}</td>
               <td style="border:1px solid;background-color:#53DA44">${recambiod.concentracion} %</td>
-              <td style="border:1px solid;background-color:#53DA44">${decodeURIComponent(CryptoJS.AES.decrypt(recam.liquidoEntrante, 'clave_secreta').toString(CryptoJS.enc.Utf8))} ml</td>
-              <td style="border:1px solid;background-color:#53DA44">${decodeURIComponent(CryptoJS.AES.decrypt(recam.drenajeDialisis, 'clave_secreta').toString(CryptoJS.enc.Utf8))} ml</td>
-              <td style="border:1px solid;background-color:#53DA44">${(parseInt(CryptoJS.AES.decrypt(decodeURIComponent(recam.drenajeDialisis), "clave_secreta").toString(CryptoJS.enc.Utf8),10)-decodeURIComponent(CryptoJS.AES.decrypt(recam.liquidoEntrante, 'clave_secreta').toString(CryptoJS.enc.Utf8)))} ml</td>
+              <td style="border:1px solid;background-color:#53DA44">${decodeURIComponent(CryptoJS.AES.decrypt(recam.liquidoEntrante, cajaNegra).toString(CryptoJS.enc.Utf8))} ml</td>
+              <td style="border:1px solid;background-color:#53DA44">${decodeURIComponent(CryptoJS.AES.decrypt(recam.drenajeDialisis, cajaNegra).toString(CryptoJS.enc.Utf8))} ml</td>
+              <td style="border:1px solid;background-color:#53DA44">${(parseInt(CryptoJS.AES.decrypt(decodeURIComponent(recam.drenajeDialisis), "clave_secreta").toString(CryptoJS.enc.Utf8),10)-decodeURIComponent(CryptoJS.AES.decrypt(recam.liquidoEntrante, cajaNegra).toString(CryptoJS.enc.Utf8)))} ml</td>
               `
               }
               

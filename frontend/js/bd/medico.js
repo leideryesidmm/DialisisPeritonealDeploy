@@ -15,7 +15,7 @@ let obtenerCedulasUsuarios=async(id, cedula)=>{
       const pacientes=await peticion.json();
       console.log(pacientes);
       pacientes.forEach(paciente=>{
-        let decryptedCedula = CryptoJS.AES.decrypt(paciente.cedula, 'clave_secreta').toString(CryptoJS.enc.Utf8);
+        let decryptedCedula = CryptoJS.AES.decrypt(paciente.cedula, cajaNegra).toString(CryptoJS.enc.Utf8);
         console.log(decryptedCedula);
         if(cedula===decryptedCedula){   
         console.log("ENTRO");
@@ -58,7 +58,7 @@ console.log(data);
 
     let cedulaEncriptada="";
     let contraseniaEncriptadaBD="";
-    let decryptedCedula = CryptoJS.AES.decrypt(cedul, 'clave_secreta').toString(CryptoJS.enc.Utf8);
+    let decryptedCedula = CryptoJS.AES.decrypt(cedul, cajaNegra).toString(CryptoJS.enc.Utf8);
      cedulaEncriptada = await obtenerCedulasUsuarios(0,decryptedCedula);
     console.log(decryptedCedula);
 
@@ -66,7 +66,7 @@ console.log(data);
     console.log(contraseniaEncriptadaBD);
 
 
-let contraseniaBD = CryptoJS.AES.decrypt(contraseniaEncriptadaBD, 'clave_secreta').toString(CryptoJS.enc.Utf8);
+let contraseniaBD = CryptoJS.AES.decrypt(contraseniaEncriptadaBD, cajaNegra).toString(CryptoJS.enc.Utf8);
 console.log(contraseniaBD);
 
 const contraseniaAnterior = document.getElementById("contraseniaanterior").value;
@@ -74,7 +74,7 @@ const nuevaContrasenia = document.getElementById("newcontrasenia").value;
 console.log(nuevaContrasenia)
 
 if (contraseniaAnterior === contraseniaBD) {
-  const contraseniaEncriptada = CryptoJS.AES.encrypt(nuevaContrasenia, 'clave_secreta').toString();
+  const contraseniaEncriptada = CryptoJS.AES.encrypt(nuevaContrasenia, cajaNegra).toString();
 
   let usuarioInDto = { cedula: cedulaEncriptada, contrasenia: contraseniaEncriptada };
   console.log(usuarioInDto);
@@ -132,11 +132,11 @@ let listarMedicos = async () => {
         .filter(medico => medico.activo)
         .map(medico => {
           console.log(medico)
-          let cedulaDesencriptada = CryptoJS.AES.decrypt(medico.cedula, 'clave_secreta').toString(CryptoJS.enc.Utf8);
-          let nombreDesencriptado = CryptoJS.AES.decrypt(medico.nombre, 'clave_secreta').toString(CryptoJS.enc.Utf8);
-          let celularDesencriptado = CryptoJS.AES.decrypt(medico.celular, 'clave_secreta').toString(CryptoJS.enc.Utf8);
-          let correoDesencriptado = CryptoJS.AES.decrypt(medico.correo, 'clave_secreta').toString(CryptoJS.enc.Utf8);
-          let profesionDesencriptada=CryptoJS.AES.decrypt(medico.profesion, 'clave_secreta').toString(CryptoJS.enc.Utf8);
+          let cedulaDesencriptada = CryptoJS.AES.decrypt(medico.cedula, cajaNegra).toString(CryptoJS.enc.Utf8);
+          let nombreDesencriptado = CryptoJS.AES.decrypt(medico.nombre, cajaNegra).toString(CryptoJS.enc.Utf8);
+          let celularDesencriptado = CryptoJS.AES.decrypt(medico.celular, cajaNegra).toString(CryptoJS.enc.Utf8);
+          let correoDesencriptado = CryptoJS.AES.decrypt(medico.correo, cajaNegra).toString(CryptoJS.enc.Utf8);
+          let profesionDesencriptada=CryptoJS.AES.decrypt(medico.profesion, cajaNegra).toString(CryptoJS.enc.Utf8);
           
 
           return {
@@ -178,8 +178,8 @@ let listarMedicosInactivos = async () => {
         const medicosDesencriptados = medicosInactivos
         .filter(medico => !medico.activo)
         .map(medico => {
-          let cedulaDesencriptada = CryptoJS.AES.decrypt(medico.cedula, 'clave_secreta').toString(CryptoJS.enc.Utf8);
-          let nombreDesencriptado = CryptoJS.AES.decrypt(medico.nombre, 'clave_secreta').toString(CryptoJS.enc.Utf8);
+          let cedulaDesencriptada = CryptoJS.AES.decrypt(medico.cedula, cajaNegra).toString(CryptoJS.enc.Utf8);
+          let nombreDesencriptado = CryptoJS.AES.decrypt(medico.nombre, cajaNegra).toString(CryptoJS.enc.Utf8);
 
           return {
             nombre: nombreDesencriptado,
@@ -241,7 +241,7 @@ let listarEspecialidad = async () => {
    console.log(medicos);
   
     for (const medico of medicos) {
-      let decryptedCedula = CryptoJS.AES.decrypt(medico.cedula, 'clave_secreta').toString(CryptoJS.enc.Utf8);
+      let decryptedCedula = CryptoJS.AES.decrypt(medico.cedula, cajaNegra).toString(CryptoJS.enc.Utf8);
       const cedulaCodificado = decodeURIComponent(decryptedCedula);
       console.log(cedulaCodificado);
       console.log(decryptedCedula);
@@ -273,12 +273,12 @@ let listarEspecialidad = async () => {
         const selectProfesion = document.getElementById('selectProfesion');
         var selectedOption = selectProfesion.options[selectProfesion.selectedIndex];
         var profesion=selectedOption.value;
-        var profesionEncriptada=CryptoJS.AES.encrypt(profesion,'clave_secreta').toString();
-       var  documentoEncriptado = CryptoJS.AES.encrypt(documento, 'clave_secreta').toString();
-       var telefonoEncriptado = CryptoJS.AES.encrypt(telefono, 'clave_secreta').toString();
-       var nombreEncriptado = CryptoJS.AES.encrypt(nombre, 'clave_secreta').toString();
-       var correo = CryptoJS.AES.encrypt(correo, 'clave_secreta').toString();
-       var  tipoDocumentoEncriptado = CryptoJS.AES.encrypt(tipoDocumento, 'clave_secreta').toString();
+        var profesionEncriptada=CryptoJS.AES.encrypt(profesion,cajaNegra).toString();
+       var  documentoEncriptado = CryptoJS.AES.encrypt(documento, cajaNegra).toString();
+       var telefonoEncriptado = CryptoJS.AES.encrypt(telefono, cajaNegra).toString();
+       var nombreEncriptado = CryptoJS.AES.encrypt(nombre, cajaNegra).toString();
+       var correo = CryptoJS.AES.encrypt(correo, cajaNegra).toString();
+       var  tipoDocumentoEncriptado = CryptoJS.AES.encrypt(tipoDocumento, cajaNegra).toString();
        
         const medicoInDto = {
   
@@ -296,9 +296,9 @@ let listarEspecialidad = async () => {
         console.log(medicoInDto);
   
   if(existe==false){
-        let decryptedCedula = CryptoJS.AES.decrypt(medicoInDto.nombre, 'clave_secreta').toString(CryptoJS.enc.Utf8);
+        let decryptedCedula = CryptoJS.AES.decrypt(medicoInDto.nombre, cajaNegra).toString(CryptoJS.enc.Utf8);
   console.log(decryptedCedula);
-  let decryptedNombre = CryptoJS.AES.decrypt(medicoInDto.cedula, 'clave_secreta').toString(CryptoJS.enc.Utf8);
+  let decryptedNombre = CryptoJS.AES.decrypt(medicoInDto.cedula, cajaNegra).toString(CryptoJS.enc.Utf8);
   console.log(decryptedNombre);
   
         fetch(servidorAPI+"Usuario/crearMedico", {
@@ -393,19 +393,19 @@ let encontrarMedico = async () => {
   const medico = await peticion.json();
 console.log(medico);
   
-    var decryptedNombre = CryptoJS.AES.decrypt(medico.nombre, 'clave_secreta').toString(CryptoJS.enc.Utf8);
+    var decryptedNombre = CryptoJS.AES.decrypt(medico.nombre, cajaNegra).toString(CryptoJS.enc.Utf8);
   document.getElementById("nombre").value = decryptedNombre;
 
-  var decryptedCedula = CryptoJS.AES.decrypt(medico.cedula, 'clave_secreta').toString(CryptoJS.enc.Utf8);
+  var decryptedCedula = CryptoJS.AES.decrypt(medico.cedula, cajaNegra).toString(CryptoJS.enc.Utf8);
   document.getElementById("documento").value = decryptedCedula;
 
-  var telefono = CryptoJS.AES.decrypt(medico.celular, 'clave_secreta').toString(CryptoJS.enc.Utf8);
+  var telefono = CryptoJS.AES.decrypt(medico.celular, cajaNegra).toString(CryptoJS.enc.Utf8);
   document.getElementById("telefono").value = telefono;
   
 
 
   const selectDocumento = document.getElementById('selectedDocumento');
-  const descripcionDocumento= CryptoJS.AES.decrypt(medico.tipoDocumento, 'clave_secreta').toString(CryptoJS.enc.Utf8);;
+  const descripcionDocumento= CryptoJS.AES.decrypt(medico.tipoDocumento, cajaNegra).toString(CryptoJS.enc.Utf8);;
   console.log(descripcionDocumento);
   
   Array.from(selectDocumento.options).forEach((option, index) => {
@@ -426,7 +426,7 @@ console.log(medico);
   })
 
   const selectProfesion = document.getElementById('selectedProfesion');
-  const profesion= CryptoJS.AES.decrypt(medico.profesion, 'clave_secreta').toString(CryptoJS.enc.Utf8);;
+  const profesion= CryptoJS.AES.decrypt(medico.profesion, cajaNegra).toString(CryptoJS.enc.Utf8);;
   
   
   Array.from(selectProfesion.options).forEach((option, index) => {
@@ -435,7 +435,7 @@ console.log(medico);
     }
   })
 
-  var correo = CryptoJS.AES.decrypt(medico.correo, 'clave_secreta').toString(CryptoJS.enc.Utf8);
+  var correo = CryptoJS.AES.decrypt(medico.correo, cajaNegra).toString(CryptoJS.enc.Utf8);
   document.getElementById("correo").value=correo;
  
 }

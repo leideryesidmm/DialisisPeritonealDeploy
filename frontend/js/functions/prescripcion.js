@@ -444,11 +444,11 @@ let mostrarPrescripcion= async (prescripcion, fecha, recambios) => {
       +'<div class="row">'
       +`    <div class="col-2 estado" style="`;
       if(recambios[cont]!=null){
-        console.log(decodeURIComponent(CryptoJS.AES.decrypt(recambios[cont].caracteristicaLiquido, 'clave_secreta').toString(CryptoJS.enc.Utf8))!="Turbio")
-        console.log(decodeURIComponent(CryptoJS.AES.decrypt(recambios[cont].caracteristicaLiquido, 'clave_secreta').toString(CryptoJS.enc.Utf8)))
+        console.log(decodeURIComponent(CryptoJS.AES.decrypt(recambios[cont].caracteristicaLiquido, cajaNegra).toString(CryptoJS.enc.Utf8))!="Turbio")
+        console.log(decodeURIComponent(CryptoJS.AES.decrypt(recambios[cont].caracteristicaLiquido, cajaNegra).toString(CryptoJS.enc.Utf8)))
         console.log(recambios[cont])
         estado="H";
-          msg+=`${parseInt(CryptoJS.AES.decrypt(recambios[cont].drenajeDialisis, 'clave_secreta').toString(CryptoJS.enc.Utf8))>=parseInt(CryptoJS.AES.decrypt(recambios[cont].liquidoEntrante, 'clave_secreta').toString(CryptoJS.enc.Utf8))&&decodeURIComponent(CryptoJS.AES.decrypt(recambios[cont].caracteristicaLiquido, 'clave_secreta').toString(CryptoJS.enc.Utf8))!="Turbio"?'background-color:rgb(11, 158, 11);">':'background-color:#f73c3c;">'}`;
+          msg+=`${parseInt(CryptoJS.AES.decrypt(recambios[cont].drenajeDialisis, cajaNegra).toString(CryptoJS.enc.Utf8))>=parseInt(CryptoJS.AES.decrypt(recambios[cont].liquidoEntrante, cajaNegra).toString(CryptoJS.enc.Utf8))&&decodeURIComponent(CryptoJS.AES.decrypt(recambios[cont].caracteristicaLiquido, cajaNegra).toString(CryptoJS.enc.Utf8))!="Turbio"?'background-color:rgb(11, 158, 11);">':'background-color:#f73c3c;">'}`;
           if(fecha.getFullYear() === hoy.getFullYear() &&
           fecha.getMonth() === hoy.getMonth() &&
           (fecha.getDate() === hoy.getDate()||fecha.getDate() === hoy.getDate()-1)){
@@ -551,11 +551,11 @@ let recambio=JSON.parse(localStorage.getItem("recambios"))[idRecambio];
   console.log(recambio)
 document.getElementById("inicio").innerText=recambio.horaIni.replace("T", " ");
 document.getElementById("final").innerText=recambio.horaFin.replace("T", " ");
-document.getElementById("liquidoEntrante").innerText=decodeURIComponent(CryptoJS.AES.decrypt(recambio.liquidoEntrante, 'clave_secreta').toString(CryptoJS.enc.Utf8))+" ml";
-document.getElementById("drenaje").innerText=decodeURIComponent(CryptoJS.AES.decrypt(recambio.drenajeDialisis, 'clave_secreta').toString(CryptoJS.enc.Utf8))+" ml";
+document.getElementById("liquidoEntrante").innerText=decodeURIComponent(CryptoJS.AES.decrypt(recambio.liquidoEntrante, cajaNegra).toString(CryptoJS.enc.Utf8))+" ml";
+document.getElementById("drenaje").innerText=decodeURIComponent(CryptoJS.AES.decrypt(recambio.drenajeDialisis, cajaNegra).toString(CryptoJS.enc.Utf8))+" ml";
 document.getElementById("concentracion").innerText=recambio.recambio.concentracion+"%";
-document.getElementById("estadoOrificio").innerText=decodeURIComponent(CryptoJS.AES.decrypt(recambio.orificioSalida, 'clave_secreta').toString(CryptoJS.enc.Utf8));
-document.getElementById("caracteristicaliquido").innerText=decodeURIComponent(CryptoJS.AES.decrypt(recambio.caracteristicaLiquido, 'clave_secreta').toString(CryptoJS.enc.Utf8));
+document.getElementById("estadoOrificio").innerText=decodeURIComponent(CryptoJS.AES.decrypt(recambio.orificioSalida, cajaNegra).toString(CryptoJS.enc.Utf8));
+document.getElementById("caracteristicaliquido").innerText=decodeURIComponent(CryptoJS.AES.decrypt(recambio.caracteristicaLiquido, cajaNegra).toString(CryptoJS.enc.Utf8));
 console.log("hasta aqui")
 let fecha=formatearFecha(new Date(localStorage.getItem("fecha_real")))
 console.log(fecha)
@@ -598,8 +598,8 @@ recambios.forEach(recambio => {
 +`    <td style="font-size:70%">${formatearFecha(new Date(recambio.horaIni))} \n ${formatearFechaHora(new Date(recambio.horaIni))}</th>`
 +`    <td style="font-size:70%">${formatearFecha(new Date(recambio.horaFin))} \n ${formatearFechaHora(new Date(recambio.horaFin))}</th>`
 +'    <td style="font-size:90%">'+recambio.recambio.concentracion+' %</th>'
-+'    <td style="font-size:90%">'+CryptoJS.AES.decrypt(recambio.liquidoEntrante, 'clave_secreta').toString(CryptoJS.enc.Utf8)+' ml</th>'
-+'    <td style="font-size:90%">'+CryptoJS.AES.decrypt(recambio.drenajeDialisis, 'clave_secreta').toString(CryptoJS.enc.Utf8)+' ml</th>'
++'    <td style="font-size:90%">'+CryptoJS.AES.decrypt(recambio.liquidoEntrante, cajaNegra).toString(CryptoJS.enc.Utf8)+' ml</th>'
++'    <td style="font-size:90%">'+CryptoJS.AES.decrypt(recambio.drenajeDialisis, cajaNegra).toString(CryptoJS.enc.Utf8)+' ml</th>'
 +'  </tr>';
 });
 

@@ -1,5 +1,5 @@
-let servidorAPI = "/misaludrenalbackend/";
-
+let servidorAPI = "http://localhost:8104/";
+let cajaNegra="clave_secreta"
 function isAuthenticated() {
   return localStorage.getItem("authenticated") === "true";
 }
@@ -66,9 +66,10 @@ let login = async (event) => {
 let pacienteEncontrado=false;
 let medicoEncontrado=false;
   pacientes.forEach(async paciente => {
-    decryptedCedula = CryptoJS.AES.decrypt(paciente.cedula, 'clave_secreta').toString(CryptoJS.enc.Utf8);
+    if(paciente.activo==true){
+    decryptedCedula = CryptoJS.AES.decrypt(paciente.cedula, cajaNegra).toString(CryptoJS.enc.Utf8);
     console.log(decryptedCedula);
-    contrasenia = CryptoJS.AES.decrypt(paciente.contrasenia, 'clave_secreta').toString(CryptoJS.enc.Utf8);
+    contrasenia = CryptoJS.AES.decrypt(paciente.contrasenia, cajaNegra).toString(CryptoJS.enc.Utf8);
     console.log(contrasenia);
     console.log(username === decryptedCedula && password === contrasenia);
     if (username === decryptedCedula && password === contrasenia) {
@@ -96,13 +97,14 @@ let medicoEncontrado=false;
       pacienteEncontrado=true;
       return cambiado;
       }
-    }
+    }}
   });
     if(!pacienteEncontrado){
       medicos.forEach(medico => {
-      decryptedCedula = CryptoJS.AES.decrypt(medico.cedula, 'clave_secreta').toString(CryptoJS.enc.Utf8);
+        if(medico.activo==true){
+      decryptedCedula = CryptoJS.AES.decrypt(medico.cedula, cajaNegra).toString(CryptoJS.enc.Utf8);
       console.log(decryptedCedula);
-      contrasenia = CryptoJS.AES.decrypt(medico.contrasenia, 'clave_secreta').toString(CryptoJS.enc.Utf8);
+      contrasenia = CryptoJS.AES.decrypt(medico.contrasenia, cajaNegra).toString(CryptoJS.enc.Utf8);
       console.log(contrasenia);
       if (username === decryptedCedula && password === contrasenia) {
         localStorage.setItem("authenticated", "true");
@@ -119,13 +121,11 @@ let medicoEncontrado=false;
         medicoEncontrado=true;
         return username;
       }
-      })
+    }
+    })
     }
     if(!pacienteEncontrado && !medicoEncontrado){
       $('#errorDatosModal').modal('show');
-      let msg="";
-      msg+='<p class="error">¡Datos Incorrectos!</p>';
-      document.getElementById("datosIncorrectos").innerHTML=msg;
       document.getElementById("log-in").disabled=false;
     }
 }

@@ -14,7 +14,7 @@ let obtenerCedulasUsuarios=async(id, cedula)=>{
       const pacientes=await peticion.json();
       console.log(pacientes);
       pacientes.forEach(paciente=>{
-        let decryptedCedula = CryptoJS.AES.decrypt(paciente.cedula, 'clave_secreta').toString(CryptoJS.enc.Utf8);
+        let decryptedCedula = CryptoJS.AES.decrypt(paciente.cedula, cajaNegra).toString(CryptoJS.enc.Utf8);
         console.log(decryptedCedula);
         if(cedula===decryptedCedula){   
         console.log("ENTRO");
@@ -58,7 +58,7 @@ console.log(data);
 
     let cedulaEncriptada="";
     let contraseniaEncriptadaBD="";
-    let decryptedCedula = CryptoJS.AES.decrypt(cedul, 'clave_secreta').toString(CryptoJS.enc.Utf8);
+    let decryptedCedula = CryptoJS.AES.decrypt(cedul, cajaNegra).toString(CryptoJS.enc.Utf8);
      cedulaEncriptada = await obtenerCedulasUsuarios(0,decryptedCedula);
     console.log(decryptedCedula);
 
@@ -66,7 +66,7 @@ console.log(data);
     console.log(contraseniaEncriptadaBD);
 
 
-let contraseniaBD = CryptoJS.AES.decrypt(contraseniaEncriptadaBD, 'clave_secreta').toString(CryptoJS.enc.Utf8);
+let contraseniaBD = CryptoJS.AES.decrypt(contraseniaEncriptadaBD, cajaNegra).toString(CryptoJS.enc.Utf8);
 console.log(contraseniaBD);
 
 const contraseniaAnterior = document.getElementById("contraseniaanterior").value;
@@ -74,7 +74,7 @@ const nuevaContrasenia = document.getElementById("newcontrasenia").value;
 console.log(nuevaContrasenia)
 
 if (contraseniaAnterior === contraseniaBD) {
-  const contraseniaEncriptada = CryptoJS.AES.encrypt(nuevaContrasenia, 'clave_secreta').toString();
+  const contraseniaEncriptada = CryptoJS.AES.encrypt(nuevaContrasenia, cajaNegra).toString();
 
   let usuarioInDto = { cedula: cedulaEncriptada, contrasenia: contraseniaEncriptada };
   console.log(usuarioInDto);
@@ -121,7 +121,7 @@ let prescripciones= async()=>{
       let cedul= decodeURIComponent(dato.cedula);
       let cedEncriptada="";
       let cedulaEncriptada="";
-      if(usuario=="medico"){
+      if(usuario=="medico" || usuario=="administrador"){
        cedulaEncriptada = await obtenerCedulaEncriptada(0, CryptoJS.AES.decrypt(decodeURIComponent(localStorage.getItem("cedulaPaciente")), "clave_secreta").toString(CryptoJS.enc.Utf8));
       ;}
       else{
@@ -202,7 +202,7 @@ let obtenerCedulaEncriptada=async(id, cedula)=>{
       const pacientes=await peticion.json();
       
       pacientes.forEach(paciente=>{
-        let decryptedCedula = CryptoJS.AES.decrypt(paciente.cedula, 'clave_secreta').toString(CryptoJS.enc.Utf8);
+        let decryptedCedula = CryptoJS.AES.decrypt(paciente.cedula, cajaNegra).toString(CryptoJS.enc.Utf8);
         
         if(cedula===decryptedCedula){   
         
@@ -240,11 +240,11 @@ let crearRecambio = async () => {
       }
     }
 
-    let liquidoEntranteEncriptado=CryptoJS.AES.encrypt(liquidoEntrante, 'clave_secreta').toString();
-    let drenajeEncriptado=CryptoJS.AES.encrypt(drenaje, 'clave_secreta').toString();
-    let concentracionEncriptada=CryptoJS.AES.encrypt(concentracion, 'clave_secreta').toString();
-    let liquidoEncriptado=CryptoJS.AES.encrypt(liquido, 'clave_secreta').toString();
-    let imagenEncriptada=CryptoJS.AES.encrypt(imagenGuardada, 'clave_secreta').toString();
+    let liquidoEntranteEncriptado=CryptoJS.AES.encrypt(liquidoEntrante, cajaNegra).toString();
+    let drenajeEncriptado=CryptoJS.AES.encrypt(drenaje, cajaNegra).toString();
+    let concentracionEncriptada=CryptoJS.AES.encrypt(concentracion, cajaNegra).toString();
+    let liquidoEncriptado=CryptoJS.AES.encrypt(liquido, cajaNegra).toString();
+    let imagenEncriptada=CryptoJS.AES.encrypt(imagenGuardada, cajaNegra).toString();
 
     let recambioUnitario={
       liquidoEntrante:liquidoEntranteEncriptado,
@@ -328,10 +328,10 @@ else{
     var fechayhoraIni=document.getElementById("fechaHoraIni").value;
     var fechayhoraFin=document.getElementById("fechaHoraFin").value;
 
-    let liquidoEntranteEncriptado=CryptoJS.AES.encrypt(liquidoEntrante, 'clave_secreta').toString();
-    let drenajeEncriptado=CryptoJS.AES.encrypt(drenaje, 'clave_secreta').toString();
-    let liquidoEncriptado=CryptoJS.AES.encrypt(liquidoSelect, 'clave_secreta').toString();
-    let orificioEncriptada=CryptoJS.AES.encrypt(orificio, 'clave_secreta').toString();
+    let liquidoEntranteEncriptado=CryptoJS.AES.encrypt(liquidoEntrante, cajaNegra).toString();
+    let drenajeEncriptado=CryptoJS.AES.encrypt(drenaje, cajaNegra).toString();
+    let liquidoEncriptado=CryptoJS.AES.encrypt(liquidoSelect, cajaNegra).toString();
+    let orificioEncriptada=CryptoJS.AES.encrypt(orificio, cajaNegra).toString();
 
     let recambioHechoInDto={
       "liquidoEntrante": liquidoEntranteEncriptado,
@@ -404,8 +404,8 @@ else{
     document.getElementById("drenaje").value=CryptoJS.AES.decrypt(recambioHecho.drenajeDialisis, "clave_secreta").toString(CryptoJS.enc.Utf8); 
     document.getElementById("fechaHoraIni").value=recambioHecho.horaIni;
     document.getElementById("fechaHoraFin").value=recambioHecho.horaFin;
-    const caracteristicaLiquido=CryptoJS.AES.decrypt(recambioHecho.caracteristicaLiquido, 'clave_secreta').toString(CryptoJS.enc.Utf8);
-    const orificioSalida=CryptoJS.AES.decrypt(recambioHecho.orificioSalida, 'clave_secreta').toString(CryptoJS.enc.Utf8);
+    const caracteristicaLiquido=CryptoJS.AES.decrypt(recambioHecho.caracteristicaLiquido, cajaNegra).toString(CryptoJS.enc.Utf8);
+    const orificioSalida=CryptoJS.AES.decrypt(recambioHecho.orificioSalida, cajaNegra).toString(CryptoJS.enc.Utf8);
     const selectLiquido = document.getElementById("selectLiquido");
 
 for (let i = 0; i < selectLiquido.options.length; i++) {
@@ -446,10 +446,10 @@ for (let i = 0; i < inputRadios.length; i++) {
     var fechayhoraIni=document.getElementById("fechaHoraIni").value;
     var fechayhoraFin=document.getElementById("fechaHoraFin").value;
 
-    let liquidoEntranteEncriptado=CryptoJS.AES.encrypt(liquidoEntrante, 'clave_secreta').toString();
-    let drenajeEncriptado=CryptoJS.AES.encrypt(drenaje, 'clave_secreta').toString();
-    let liquidoEncriptado=CryptoJS.AES.encrypt(liquidoSelect, 'clave_secreta').toString();
-    let orificioEncriptada=CryptoJS.AES.encrypt(orificio, 'clave_secreta').toString();
+    let liquidoEntranteEncriptado=CryptoJS.AES.encrypt(liquidoEntrante, cajaNegra).toString();
+    let drenajeEncriptado=CryptoJS.AES.encrypt(drenaje, cajaNegra).toString();
+    let liquidoEncriptado=CryptoJS.AES.encrypt(liquidoSelect, cajaNegra).toString();
+    let orificioEncriptada=CryptoJS.AES.encrypt(orificio, cajaNegra).toString();
 
     let recambioHechoInDto={
       "liquidoEntrante": liquidoEntranteEncriptado,
@@ -565,7 +565,7 @@ for (let i = 0; i < inputRadios.length; i++) {
         const pacientes=await peticion.json();
      
         pacientes.forEach(paciente=>{
-          let decryptedCedula = CryptoJS.AES.decrypt(paciente.cedula, 'clave_secreta').toString(CryptoJS.enc.Utf8);
+          let decryptedCedula = CryptoJS.AES.decrypt(paciente.cedula, cajaNegra).toString(CryptoJS.enc.Utf8);
           const cedulaCodificado = encodeURIComponent(decryptedCedula);
          
           if(cedula===cedulaCodificado){
@@ -1187,7 +1187,7 @@ let findUsuario= async () => {
         const usuarioData = await response.json();
         console.log(usuarioData)
         const nombreUsuario = usuarioData.nombre; 
-        nombreDecrypt =CryptoJS.AES.decrypt(nombreUsuario, 'clave_secreta').toString(CryptoJS.enc.Utf8);
+        nombreDecrypt =CryptoJS.AES.decrypt(nombreUsuario, cajaNegra).toString(CryptoJS.enc.Utf8);
         document.getElementById("title").innerText="Prescripciones del paciente: "+nombreDecrypt
       }
     } catch (error) {

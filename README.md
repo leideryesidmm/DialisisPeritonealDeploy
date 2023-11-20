@@ -128,4 +128,4 @@ Proyecto desarrollado como Proyecto de grado del  [Programa de Ingeniería de Si
 
   [Programa de Ingeniería de Sistemas]:<https://ingsistemas.cloud.ufps.edu.co/>
   [Universidad Francisco de Paula Santander]:<https://ww2.ufps.edu.co/>
-  [Mi Salud Renal]:<https://studentsprojects.cloud.ufps.edu.co/misaludrenal/>
+  [Mi Salud Renal]:<https://studentsprojects.cloud.ufps.edu.co/misaludrenalpruebas/>
