@@ -157,12 +157,17 @@ let onload = async () => {
         location.href="pacientes.html";
       }
       else{
-      if(localStorage.getItem("cambiado")=="true"){
-      location.href = "principal.html";}
-      else{
-        location.href="cambiarContrasenia.html"
-      }
+        if(usuario=="administrador"){
+          location.href="administrador.html"
+        }else{
+          if(localStorage.getItem("cambiado")=="true"){
+            location.href = "principal.html";}
+          else{
+            location.href="cambiarContrasenia.html"
+          }
         }
+        
+      }
     }
   } else {
     console.log("noAuthenticated")
