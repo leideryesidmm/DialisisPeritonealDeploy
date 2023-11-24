@@ -8,10 +8,10 @@ services:
     working_dir: /usr/local/app
     volumes:
       - type: bind
-        source: my-nginx-frontend.conf
+        source: /var2/dockers-studentsprojects-deploy-0/DialisisPeritonealDeploy/my-nginx-frontend.conf
         target: /etc/nginx/conf.d/default.conf
       - type: bind
-        source: frontend
+        source: /var2/dockers-studentsprojects-deploy-0/DialisisPeritonealDeploy/frontend/
         target: /usr/share/nginx/html
     ports:
       - 8103:80
@@ -28,7 +28,6 @@ services:
       - DATABASE_PASSWORD=matildealexandraal@ufps.edu.co
     volumes:
       - type: bind  
-        source: backend/target
+        source: /var2/dockers-studentsprojects-deploy-0/DialisisPeritonealDeploy/backend/target
         target: /code
     command: java -jar /code/DialisisPeritoneal-0.0.1-SNAPSHOT.war
-
