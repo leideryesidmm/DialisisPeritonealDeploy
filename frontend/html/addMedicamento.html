@@ -14,16 +14,16 @@
 </head>
 <body>
     
-        <div class="navbar" name="navbar" id="navbar">
+        <nav class="navbar" name="navbar" id="navbar">
           <div class="col-2 no-effect"><a href="medicamento.html" class="devolverse"><img src="../img/devolverseColor.png" alt="Ir atrás" ></a></div>
           <div class="col-8"><h1 class="title">Medicamentos</h1></div>
           <div class="col-2"></div>
-        </div>
+        </nav>
             <br>
-        <div class="form-container">
+        <main class="form-container">
             <h5>Agregar Medicamento</h5>
-        <div class="form-group">
-            <form>
+        <section class="form-group">
+            <form onsubmit="crearMedicamento(event)">
             <div class="name">
                 <label for="medicamento">Medicamento:</label>
                 <input type="text" name="medicamento" id="medicamento" class="medicamento" required>
@@ -56,7 +56,7 @@
 
             <div class="toma">
                 <label for="tomas">Tomas diarias:</label>
-                <input type="number" name="tomas" min="0" id="tomas" class="tomas" required>
+                <input type="number" name="tomas" min="1" id="tomas" class="tomas" required>
             </div>
 
             <div class="recetado">
@@ -68,15 +68,16 @@
               <label for="norecetado" id="no">No </label>
               <input type="radio" name="receta" id="norecetado" value="No" class="norecetado">
           </div>
+          <section class="btn-container">
+            <a href="medicamento.html" class="btn-cancelar">Cancelar</a>
+            <button  type="submit" id="guardarmedicamento" class="btn-nuevo">Guardar</button>
+          </section>
 
 </form>
-        </div>
-        <div class="btn-container">
-          <a href="medicamento.html" class="btn-cancelar">Cancelar</a>
-          <button onclick="crearMedicamento()"  type="submit" id="guardarmedicamento" data-toggle="modal" data-target="#succesModal" class="btn-nuevo">Guardar</button>
-        </div>
+</section>
         
-      </div>
+        
+      </main>
     </div>
     
 

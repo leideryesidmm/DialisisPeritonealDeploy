@@ -58,7 +58,7 @@ let NavBarPrescripcion = () => {
 let agregarPrescripcion = async () => {
   let ms = "";
 
-  ms += '<div class="form-container">' +
+  ms += '<ediv class="form-container">' +
       '<h2>Agregar Prescripción</h2>' +
       '<p id="campos">Selecciona la cantidad de prescripciones mensuales</p>'+
       '<form id="paciente-form" onsubmit="obtenerValoresDePrescripcion(event)">';
@@ -702,7 +702,7 @@ let msg="";
     <td style="font-size:90%">${chequeo.cita.fecha.split("T")[0]}</td>
      <td style="font-size:90%">${chequeo.peso} Kgs.</td>
      <td style="font-size:90%">${chequeo.pesoSeco} Kgs.</td>
-     <td style="font-size:90%">${chequeo.tensionArterial} mm Hg</td>
+     <td style="font-size:90%">${chequeo.tensionArterial} mmHg</td>
      <td style="font-size:90%">${chequeo.hemoglobina} g/L</td>
      <td style="font-size:90%">${chequeo.colesterolTotal} mg/dL</td>
      <td style="font-size:90%">${chequeo.fosforo} mg/dL</td>
@@ -1484,11 +1484,11 @@ msg +=
         </div>
         <div class="row mt-2 border p-2">
         <div class="centrar-label col-6"><label class="form-label" for="fosforo">Fósforo:</label></div>
-        <div class="col-6"><input class="form-control" type="text" name="chequeo" id="fosforo" disabled value="`+chequeo.fosforo+`mg/dL"></input></div>
+        <div class="col-6"><input class="form-control" type="text" name="chequeo" id="fosforo" disabled value="`+chequeo.fosforo+` mg/dL"></input></div>
         </div>
         <div class="row mt-2 border p-2">
         <div class="centrar-label col-6"><label class="form-label" for="potasio">Potasio:</label></div>
-        <div class="col-6"><input class="form-control" type="text" name="chequeo" id="potasio" disabled value="`+chequeo.potasio+`mmol/L"></input></div>
+        <div class="col-6"><input class="form-control" type="text" name="chequeo" id="potasio" disabled value="`+chequeo.potasio+` mmol/L"></input></div>
         </div>
         <div class="row mt-2 border p-2">
         <div class="centrar-label col-6"><label class="form-label" for="nitrogenoUreico">Nitrógeno Uréico:</label></div>

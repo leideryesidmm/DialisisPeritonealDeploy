@@ -4,9 +4,9 @@ let NavBarMedicamento = () => {
   
   if (usuario == "paciente") {
       ms +=          
-      '<div class="navbar" id="bann" style="padding:0"><div class="col-2"><a href="principal.html" class="devolverse"><img src="../img/devolverseColor.png" alt="Ir atrás"></a></div>'+
+      '<nav class="navbar" id="bann" style="padding:0"><div class="col-2"><a href="principal.html" class="devolverse"><img src="../img/devolverseColor.png" alt="Ir atrás"></a></div>'+
       '<div class="col-8"><h1 class="title-principal-app">Medicamentos</h1></div>'+
-      '<div class="col-2"></div></div>';
+      '<div class="col-2"></div></nav>';
   }
   else {
       ms +=`<nav id="nav" class=" navbar-expand-lg navbar-light">

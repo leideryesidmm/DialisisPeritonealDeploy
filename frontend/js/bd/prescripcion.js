@@ -214,7 +214,7 @@ let obtenerCedulaEncriptada=async(id, cedula)=>{
       }
     }
     })
-    
+    console.log(result);
   return result;
 }
 
@@ -933,8 +933,10 @@ let validacirChecks=validarCeckbox();
     let visitaEspecialistaDto=await obtenerUltimaVisita();
     let chequeoMensualInDto=await obtenerUltimoChequeo();
     console.log(visitaEspecialistaDto);
-    console.log(chequeoMensualInDto);
-    delete visitaEspecialistaDto.cita;
+    if(visitaEspecialistaDto!=null){
+    delete visitaEspecialistaDto.cita;}
+    if(chequeoMensualInDto!=null){
+    delete chequeoMensualInDto.cita;}
     await eliminarCita();
     await crearCita(event);
     let ultimaCita=await encontrarUltimaCita();

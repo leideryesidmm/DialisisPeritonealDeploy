@@ -287,7 +287,8 @@ let encontrarMedicamento=async()=>{
 
 }
 //formulaMedicamento/actualizar/{id_formula_medicamento}
-let actualizarMedicamento=async ()=> {
+let actualizarMedicamento=async (event)=> {
+  event.preventDefault();
   let data = localStorage.getItem("datos");
   let dato=JSON.parse(data);
   console.log(data);
@@ -379,7 +380,8 @@ let eliminarMedicamento=async (idMedicamento)=> {
 })
 }
 
-let crearMedicamento=async ()=> {
+let crearMedicamento=async (event)=> {
+  event.preventDefault();
   const btnMedicamento=document.getElementById("guardarmedicamento");
   btnMedicamento.style.background="gray";
   btnMedicamento.disabled="true";
