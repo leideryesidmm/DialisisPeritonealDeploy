@@ -1,4 +1,4 @@
-let servidorAPI = "/misaludrenalbackend/";
+let servidorAPI = "http://localhost:8104/";
 let cajaNegra="clave_secreta"
 function isAuthenticated() {
   return localStorage.getItem("authenticated") === "true";
