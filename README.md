@@ -95,7 +95,7 @@ El docker compose lo puede encontrar [aqui](https://github.com/leideryesidmm/Dia
 
 El docker compose cuenta con dos servicios que se desplegan correspondiente al frontend y el backend de la aplicación.
 
-El frontend: el contenedor del frontend se llama misaludrenal_frontend y cuenta con una imagen de nginx:1.17.1-alpine.
+El servicio frontend: el contenedor del frontend se llama misaludrenal_frontend y cuenta con una imagen de nginx:1.17.1-alpine.
 ```
  frontend:
     container_name: misaludrenal_frontend
@@ -111,7 +111,7 @@ El frontend: el contenedor del frontend se llama misaludrenal_frontend y cuenta 
     ports:
       - 8103:80
 ```
-El backend: el contenedor del backend se llama misaludrenal_backend y cuenta con una imagen de openjdk:19.
+El service backend: el contenedor del backend se llama misaludrenal_backend y cuenta con una imagen de openjdk:19.
 
 ```
 backend:
@@ -121,9 +121,9 @@ backend:
     ports:
       - 8104:8081
     environment:
-      - DATABASE_URL=jdbc:mysql://10.128.0.15:3306/db01student1151788?useSSL=false&serverTimezone=UTC
-      - DATABASE_USERNAME=student1151788
-      - DATABASE_PASSWORD=matildealexandraal@ufps.edu.co
+      - DATABASE_URL=*******************************************************
+      - DATABASE_USERNAME=*******
+      - DATABASE_PASSWORD=*********************
     volumes:
       - type: bind  
         source: /var2/dockers-studentsprojects-deploy-0/DialisisPeritonealDeploy/backend/target
@@ -132,6 +132,12 @@ backend:
 ```
 
 #### Variables de entorno
+|Variable|Descripción|Valor por defecto|
+|:-------:|:-------:|:-------:|
+|DATABASE_URL|es la dirección con la cual se puede acceder a la base de datos.|jdbc:mysql://10.128.0.15:3306/db01student1151788?useSSL=false&serverTimezone=UTC|
+|DATABASE_USERNAME|Usuario para conectarse a la base de datos|X|
+|DATABASE_PASSWORD|Contraseña para conectarse a la basede datos|X|
+
 
 #### ¿Como desplegar?
 
