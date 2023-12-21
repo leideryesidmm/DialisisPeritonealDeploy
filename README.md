@@ -9,7 +9,7 @@
 <p>
   <h1>Mi salud Renal</h1>
 </p>
-</div>div>
+</div>
 
 ## Índice
 1. 📋[Descripción](#descripcion)
