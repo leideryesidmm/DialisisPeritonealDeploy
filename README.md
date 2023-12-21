@@ -2,10 +2,10 @@
   <h1>Solución Tecnológica que apoye el proceso de diálisis peritoneal en pacientes con Enfermedad Renal Crónica (ERC)</h1>
 </p>
 <div align="center">
-<img src="frontend/img/logo3.png" alt="Logo" width="200" height="200">
   <p>
   <h1>Mi salud Renal</h1>
 </p>
+  <img src="frontend/img/logo3.png" alt="Logo" width="200" height="200">
 </div>
 
 ## Índice
