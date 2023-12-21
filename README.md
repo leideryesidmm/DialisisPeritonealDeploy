@@ -89,6 +89,52 @@ La vista de implementación en arquitectura de software representa cómo las par
 ### Despliegue
 ___
 
+#### Docker Compose
+
+El docker compose lo puede encontrar [aqui](https://github.com/leideryesidmm/DialisisPeritonealDeploy/blob/main/docker-compose.yml).
+
+El docker compose cuenta con dos servicios que se desplegan correspondiente al frontend y el backend de la aplicación.
+
+El frontend: el contenedor del frontend se llama misaludrenal_frontend y cuenta con una imagen de nginx:1.17.1-alpine.
+```
+ frontend:
+    container_name: misaludrenal_frontend
+    image: nginx:1.17.1-alpine
+    working_dir: /usr/local/app
+    volumes:
+      - type: bind
+        source: /var2/dockers-studentsprojects-deploy-0/DialisisPeritonealDeploy/my-nginx-frontend.conf
+        target: /etc/nginx/conf.d/default.conf
+      - type: bind
+        source: /var2/dockers-studentsprojects-deploy-0/DialisisPeritonealDeploy/frontend/
+        target: /usr/share/nginx/html
+    ports:
+      - 8103:80
+```
+El backend: el contenedor del backend se llama misaludrenal_backend y cuenta con una imagen de openjdk:19.
+
+```
+backend:
+    container_name: misaludrenal_backend
+    image: openjdk:19
+    working_dir: /code
+    ports:
+      - 8104:8081
+    environment:
+      - DATABASE_URL=jdbc:mysql://10.128.0.15:3306/db01student1151788?useSSL=false&serverTimezone=UTC
+      - DATABASE_USERNAME=student1151788
+      - DATABASE_PASSWORD=matildealexandraal@ufps.edu.co
+    volumes:
+      - type: bind  
+        source: /var2/dockers-studentsprojects-deploy-0/DialisisPeritonealDeploy/backend/target
+        target: /code
+    command: java -jar /code/DialisisPeritoneal-0.0.1-SNAPSHOT.war
+```
+
+#### Variables de entorno
+
+#### ¿Como desplegar?
+
 Para el despliegue de la aplicación se usa docker, para ello se debe seguir los siguientes pasos:
 
 - Hacer "Fork" el proyecto y descargar o clonar el repositorio
