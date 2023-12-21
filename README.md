@@ -5,9 +5,11 @@
 <p align="center">
   <h1>Solución Tecnológica que apoye el proceso de diálisis peritoneal en pacientes con Enfermedad Renal Crónica (ERC)</h1>
 </p>
-<p align="center">
+<div align="center">
+<p>
   <h1>Mi salud Renal</h1>
 </p>
+</div>div>
 
 ## Índice
 1. 📋[Descripción](#descripcion)
