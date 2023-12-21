@@ -1,4 +1,4 @@
-(frontend/img/logo3.png)
+![](frontend/img/logo3.png)
 <p align="center">
   <h1>Solución Tecnológica que apoye el proceso de diálisis peritoneal en pacientes con Enfermedad Renal Crónica (ERC)</h1>
 </p>
