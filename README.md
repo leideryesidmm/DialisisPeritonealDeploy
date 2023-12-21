@@ -1,31 +1,6 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-  <style>
-    body {
-      background-color: #4B83F3;
-    }
-
-    .logo-container {
-      text-align: center;
-      padding: 20px;
-    }
-
-    .logo {
-      width: 100px;
-      height: 100px;
-    }
-  </style>
-</head>
-
-<body>
-
   <div class="logo-container">
     <img src="frontend/img/logo3.png" alt="Logo" class="logo">
   </div>
-</body>
-</html>
 <p align="center">
   <h1>Solución Tecnológica que apoye el proceso de diálisis peritoneal en pacientes con Enfermedad Renal Crónica (ERC)</h1>
 </p>
