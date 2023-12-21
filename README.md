@@ -131,9 +131,9 @@ backend:
 #### Variables de entorno
 |Variable|Descripción|Valor por defecto|
 |:-------:|:-------:|:-------:|
-|DATABASE_URL|es la dirección con la cual se puede acceder a la base de datos.|jdbc:mysql://10.128.0.15:3306/db01student1151788?useSSL=false&serverTimezone=UTC|
-|DATABASE_USERNAME|Usuario para conectarse a la base de datos|X|
-|DATABASE_PASSWORD|Contraseña para conectarse a la basede datos|X|
+|DATABASE_URL|Es la dirección con la cual se puede acceder a la base de datos.|jdbc:mysql://10.128.0.15:3306/db01student1151788?useSSL=false&serverTimezone=UTC|
+|DATABASE_USERNAME|Usuario para conectarse a la base de datos|<img src="./frontend/img/inhabilitar.png" width="30px" alt="X">|
+|DATABASE_PASSWORD|Contraseña para conectarse a la basede datos|<img src="./frontend/img/inhabilitar.png" width="30px" alt="X">|
 
 
 #### ¿Como desplegar?
