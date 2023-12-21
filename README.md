@@ -4,7 +4,7 @@
 </p>
 </div>
 <div align="center">
-  <img src="../imagenesReadme/logo4.png" alt="Logo" width="200" height="200">
+  <img src="./imagenesReadme/logo4.png" alt="Logo">
 </div>
 
 ## Índice
