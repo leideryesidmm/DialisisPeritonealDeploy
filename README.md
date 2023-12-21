@@ -4,10 +4,7 @@
 </p>
 </div>
 <div align="center">
-  <p>
-  <h1>Mi salud Renal</h1>
-</p>
-  <img src="./frontend/imagenesReadme/logo4.png" alt="Logo" width="200" height="200">
+  <img src="../imagenesReadme/logo4.png" alt="Logo" width="200" height="200">
 </div>
 
 ## Índice
