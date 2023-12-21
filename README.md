@@ -17,7 +17,7 @@
 ### Descripción
 ___
 
-Este repositorio contiene el código fuente de la solución tecnológica desarrollada que es presentada como proyecto de grado, el cual tiene como propósito el apoyo de pacientes con ERC.
+Este repositorio contiene el código fuente de la solución tecnológica desarrollada que es presentada como proyecto de grado, el cual tiene como propósito el apoyo de pacientes con ERC. Para esto se cuenta con el código fuente de la aplicación frontend y un archivo war con la API REST del backend.
 
 ### Tecnologías
 ___
@@ -68,6 +68,8 @@ ___
 La solución tecnológica Mi Salud Renal tiene como objetivo principal disminuir la brecha de comunicación que hay entre los médicos y sus pacientes al momento de realizar la consulta médica. Además, se busca asegurar que los pacientes tengan un mayor control sobre su tratamiento, ya que actualmente resulta agotador y obsoleto llevar un registro de su análisis de tratamiento en un cuadernillo de papel. Para abordar este problema, se ha desarrollado un sistema basado en una arquitectura distribuida que consta de dos aplicaciones, una en el backend y otra en el frontend. Estas aplicaciones permiten a los usuarios llevar a cabo todas las operaciones necesarias para que los médicos puedan seguir de manera detallada el progreso del tratamiento de sus pacientes.
 
 La aplicación está basada en una arquitectura distribuida, que está conformada principalmente por dos capas independientes, llamadas backend y frontend.
+
+Para  la comunicación fluida entre el frontend y el backend, se implementaron peticiones Fetch desde el código frontend, específicamente en las funciones alojadas en los archivos JavaScript ubicados en la carpeta 'bd'. Estas peticiones se encargan de transmitir las solicitudes entre las dos aplicaciones. En el proceso, los Controllers, son los responsables de gestionar la lógica de negocio y manipular la interacción con la base de datos, reciben y procesan estas peticiones, generando respuestas coherentes que permiten una integración eficiente entre los componentes frontend y backend del sistema. Este enfoque garantiza un intercambio de información eficaz, facilitando así el desarrollo de la aplicación de forma dinámica y coordinada.
 
 Ya que esta arquitectura tiene un enfoque de diseño que se utiliza para crear sistemas de software en los que los componentes o módulos del sistema se ejecutan en múltiples nodos de una red.
 
