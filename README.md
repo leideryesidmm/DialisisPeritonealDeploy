@@ -1,4 +1,4 @@
-<div align="center">
+<div style="background-color:#4B83F3">
   <img src="frontend/img/logo3.png" alt="Logo" width="100" height="100">
 </div>
 <p align="center">
