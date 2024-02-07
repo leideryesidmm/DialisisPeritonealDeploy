@@ -2,7 +2,6 @@
 const data = localStorage.getItem("datos");
 const dato=JSON.parse(data);
     var usuario = dato.usuario;
-    console.log(usuario);
 if(usuario=="paciente"){
      ced = decodeURIComponent(dato.cedula);
     
@@ -13,15 +12,10 @@ else{
 }
 
 function calcularEdad(nacimiento) {
-  console.log(nacimiento);
   const fechaNacimiento = new Date(nacimiento);
-  console.log(fechaNacimiento);
   const fechaActual = new Date();
-  console.log(fechaActual);
   const edadMilisegundos = fechaActual - fechaNacimiento;
-  console.log(edadMilisegundos);
   const edad = new Date(edadMilisegundos).getFullYear() - 1970;
-  console.log(edad);
 return edad;
 }
 
@@ -30,10 +24,8 @@ return edad;
 let perfil=async()=>{
         try {
           const paciente = await listaPacientes();
-          console.log(paciente);
           const alergia = await alergias();
           const cuidador = await cuidadorActivo();
-          console.log(cuidador);
     let msg="";
 
     let ms="";
@@ -43,10 +35,11 @@ let perfil=async()=>{
     ms+='Mi perfil';
     }
     else{
-      ms+="Información del Paciente";
+      ms+="Perfil del Paciente";
     }
 
     document.getElementById("title").innerHTML=ms;
+    document.getElementById("titleResponsive").innerHTML = ms;
 if(paciente!=null){
     let fecha_registro=new Date(paciente.fecha_registro).toLocaleDateString();
     msg+=
@@ -100,16 +93,14 @@ if(paciente!=null){
               '<label for="correo"><b>Correo:</b></label>'+
               '<label for="" id="correo">'+paciente.correo+'</label>'+
             '</div>';}
-            msg+='<img alt="Editar perfil" id="imagen">';
           let usuario = JSON.parse(localStorage.getItem("datos")).usuario;
           var urlActual = window.location.href;
-          console.log(paciente.tipoDocumento);
             localStorage.setItem("url", urlActual);
             localStorage.setItem("documento", paciente.tipoDocumento);
           if(usuario=="paciente"){
             msg+=
             '<div class="botonEditarPerfil">'+
-          '<a href="editarPaciente.html"class="editarPerfil" >Editar Perfil</a>'+
+          '<a href="editarPaciente.html" data-toggle="tooltip" data-placement="bottom" title="Editar Información" class="editarPerfil" >Editar Perfil</a>'+
           '</div>';
           }
           
@@ -156,9 +147,9 @@ if(paciente!=null){
           '</div>';
           var urlActual = window.location.href;
           localStorage.setItem("url", urlActual);
-        if(usuario=="medico"){
+        if(usuario=="medico"||usuario=="administrador"){
         msg+='<div class="botonEditarPerfil">'+
-        '<a href="editarPaciente.html"class="editarPerfil" >Editar Perfil</a>'+
+        '<a href="editarPaciente.html"class="editarPerfil" data-toggle="tooltip" data-placement="bottom" title="Editar Información del Paciente" >Editar Perfil</a>'+
         '</div>';
         }
         msg+='</div>'+
@@ -176,18 +167,18 @@ if(alergia!=null && alergia !== ""){
             '</p>'+ 
     '</div>';
     let usuario = JSON.parse(localStorage.getItem("datos")).usuario;
-    if(usuario=="medico"){
+    if(usuario=="medico"||usuario=="administrador"){
     msg+='<div class="botonAgregarAlergia">'+
-    '<a href="alergias.html"class="alerg-nueva" id="addAlergia">Agregar Alergia</a>'+
+    '<a href="alergias.html"class="alerg-nueva" data-toggle="tooltip" data-placement="bottom" title="Agregar Alergia" id="addAlergia">Agregar Alergia</a>'+
     '</div>'+
     '<br>';
     }
 }
 else{
   let usuario = JSON.parse(localStorage.getItem("datos")).usuario;
-  if(usuario=="medico"){
+  if(usuario=="medico"||usuario=="administrador"){
   msg+='<div class="botonAgregarAlergia">'+
-  '<br><a href="alergias.html"class="alerg-nueva" >Agregar Alergia</a>'+
+  '<br><a href="alergias.html"class="alerg-nueva" data-toggle="tooltip" data-placement="bottom" title="Agregar Alergia">Agregar Alergia</a>'+
   '<br>'+
   '</div>';
   }
@@ -204,7 +195,7 @@ if(cuidador!=null && cuidador !== ""){
         '<div class="img-cuidador">';
         let usuario2 = JSON.parse(localStorage.getItem("datos")).usuario;
   if(usuario2=="paciente"){
-        msg+='<a href="cuidador.html" class="ver-cuidador">Ver Cuidador</a>';
+        msg+='<a href="cuidador.html" data-toggle="tooltip" data-placement="bottom" title="Ver o editar cuidadores" class="ver-cuidador">Ver Cuidador</a>';
   }
         msg+='</div>'+
     '</div>'+
@@ -263,7 +254,7 @@ let editarPaciente=async()=>{
             '<div class="form-column">'+
               '<label for="nombre" id="data">Nombre del paciente:<label id="asq">*</label></label>'+
               '<br>'+
-              '<input type="text" enterkeyhint="next"  class="nombre" id="nombre" name="nombre" required>'+
+              '<input type="text" enterkeyhint="next" placeholder="Nombre del paciente" class="nombre" id="nombre" name="nombre" required>'+
             '</div>'+
             '<div class="form-column">'+
               '<label for="fecha" id="data">Fecha de nacimiento:<label id="asq">*</label></label>'+
@@ -288,19 +279,19 @@ let editarPaciente=async()=>{
           '<div class="form-column">'+
               '<label for="telefono" id="data">Teléfono:<label id="asq">*</label></label>'+
               '<br>'+
-              '<input type="text" enterkeyhint="next"  class="telefono" id="telefono" name="telefono" required>'+
+              '<input type="text" enterkeyhint="next" placeholder="Teléfono de contacto" class="telefono" id="telefono" name="telefono" required>'+
             '</div>'+
           '</div>'+
           '<div class="form-row">'+
           '<div class="form-column">'+
           '<label for="direccion" id="data">Dirección:<label id="asq">*</label></label>'+
           '<br>'+
-          '<input type="text" enterkeyhint="next" enterkeyhint="previous"  class="direccion" id="direccion" name="direccion" required>'+
+          '<input type="text" enterkeyhint="next" enterkeyhint="previous" placeholder="Dirección de la residencia" class="direccion" id="direccion" name="direccion" required>'+
         '</div>'+
             '<div class="form-column">'+
             '<label for="correo" id="data">Correo electrónico:<label id="asq">*</label></label>'+
           '<br>'+
-          '<input type="text" enterkeyhint="next" enterkeyhint="previous"  class="correo" id="correo" name="correo" placeholder="@" required>'+
+          '<input type="text" enterkeyhint="next" enterkeyhint="previous" placeholder="ejemplo@gmail.com" class="correo" id="correo" name="correo" required>'+
             '</div>'+            
           '</div>'+
           '<div class="form-row">'+
@@ -315,16 +306,12 @@ let editarPaciente=async()=>{
               '<select id="selectedEps" required></select>'+
             '</div>'+ 
             '</div>'+
-            '<div class="container">'+
-            '<label for="correo" id="prueba">Foto de Perfil: &nbsp&nbsp</label>'+
-            '<input type="file" value="Subir Foto" name="imageFile" id="imageFile">'+
-            '</div>'+
             '<div class="buttons">'+
             '<div class="btn-save">'+
               '<a href="perfil.html" class="cancelar" id="cancelar">Cancelar</a>'+
             '</div>'+
             '<div class="btn-save">'+
-              '<button id="actualizarPerfil" type="submit" class="btn btn-primary" data-toggle="modal" data-target="#succesModal" >Actualizar</button>'+
+              '<button id="actualizarPerfil" type="submit" data-toggle="tooltip" data-placement="bottom" title="Actualizar Paciente" class="btn btn-primary" data-toggle="modal" data-target="#succesModal" >Actualizar</button>'+
             '</div>'+
             '</div>'+
             '</div>'+
@@ -359,12 +346,12 @@ else{
           '<div class="form-column">'+
               '<label for="peso" id="data">Peso:<label id="asq">*</label></label>'+
               '<br>'+
-              '<input type="number" step="any" class="peso" id="peso" name="peso" required>'+
+              '<input type="number" step="any" class="peso" id="peso" placeholder="Peso en Kgs." name="peso" required>'+
             '</div>'+
             '<div class="form-column">'+
               '<label for="pesoseco" id="data">Peso Seco:<label id="asq">*</label></label>'+
               '<br>'+
-              '<input type="number" step="any" class="pesoseco" id="pesoseco" name="pesoseco" required>'+
+              '<input type="number" step="any" class="pesoseco" id="pesoseco" placeholder="Peso en Kgs." name="pesoseco" required>'+
             '</div>'+
             
           '</div>'+
@@ -386,7 +373,7 @@ else{
               '<button onclick="cancelar()" class="cancelar">Cancelar</button>'+
             '</div>'+
             '<div class="btn-save">'+
-              '<button type="submit" data-toggle="modal" data-target="#successModal" id="actualizarPerfil">Actualizar</button>'+
+              '<button type="submit" data-toggle="modal" data-toggle="tooltip" data-placement="bottom" title="Actualizar Datos" data-target="#successModal" id="actualizarPerfil">Actualizar</button>'+
             '</div>'+
             '</div>'+
             '</form>';

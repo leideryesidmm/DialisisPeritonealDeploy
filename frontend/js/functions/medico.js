@@ -15,9 +15,7 @@ let medicosRegistrados = async (medicos) => {
         '</thead>';
 
       medicos.forEach((medico) => {
-        let clave = encodeURIComponent(CryptoJS.AES.encrypt(medico.cedula, "clave_secreta").toString())
-      
-        msg +=
+                msg +=
           '<tr>' +
           '<td>' + medico.nombre + '</td>' +
           '<td>' + medico.cedula + '</td>' +
@@ -194,7 +192,7 @@ let medicosInhabilitados = async (medicos) => {
           '<td>' + medico.nombre + '</td>' +
           '<td>' + medico.cedula + '</td>' +
           '<td>' +
-          '<a  href="" data-bs-toggle="modal" data-bs-target="#habilitarmedico' + cont + '" type="button">' +
+          '<a  href="" data-bs-toggle="modal" data-toggle="tooltip" data-placement="bottom" title="Reactivar Profesional" data-bs-target="#habilitarmedico' + cont + '" type="button">' +
           '<img src="../img/actualizar.png" class="actualizar imagen-crecible-iconos" alt="actualizar"/>' +
           '</a >' +
           '</td>' +
@@ -217,7 +215,7 @@ let medicosInhabilitados = async (medicos) => {
           '</div>' +
           '<div class="modal-footer">' +
           '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>' +
-          '<button type="button" onclick="habilitarMedico(' + medico.cedula + ')"" class="btn" id="btn-green">Habilitar</button>' +
+          '<button type="button" onclick="habilitarMedico(' + medico.cedula + ')"" "data-toggle="tooltip" data-placement="bottom" title="Habilitar Profesional" class="btn" id="btn-green">Habilitar</button>' +
           '</div>' +
           '</div>' +
           '</div>' +
@@ -249,9 +247,9 @@ let mostrarInfoMedico=async()=>{
   
       msg+='<div class="form-container">'+
           '<h2>Editar Médico</h2>'+
-          '<p id="campos"><b>*</b> Campos requeridos</p>'+
           '<form id="paciente-form" onsubmit="actualizarMedico(event)">';
-          msg+='<div class="form-row">'+
+          msg+='<p id="campos"><b>*</b>Campos requeridos</p>'+
+          '<div class="form-row">'+
               '<div class="form-column">'+
                 '<label for="nombre" id="data">Nombre del médico:<label id="asq">*</label></label>'+
                 '<br>'+
@@ -273,17 +271,17 @@ let mostrarInfoMedico=async()=>{
             '<div class="form-column">'+
             '<label for="documento" id="data">Documento de Identidad:<label id="asq">*</label></label>'+
             '<br>'+
-            '<input type="text" enterkeyhint="next"  class="documento" id="documento" name="documento" required>'+
+            '<input type="text" enterkeyhint="next" placeholder="Número de documento del profesional" class="documento" id="documento" name="documento" required disabled>'+
             '</div>'+
             '<div class="form-column">'+
                 '<label for="telefono" id="data">Teléfono:<label id="asq">*</label></label>'+
                 '<br>'+
-                '<input type="text" enterkeyhint="next"  class="telefono" id="telefono" name="telefono" required>'+
+                '<input type="text" enterkeyhint="next" placeholder="Teléfono de contacto" class="telefono" id="telefono" name="telefono" required>'+
               '</div>'+
             '</div>'+
             '<div class="form-row">'+
             '<div class="form-column">'+
-                    '<label for="selectProfesion" id="data">Profesión:<label id="asq">*</label></label>'+
+                    '<label for="selectedProfesion" id="data">Profesión:<label id="asq">*</label></label>'+
                       '<br>'+
                      '<select name="selectedProfesion" id="selectedProfesion" required>'+
                      '<option value="">Seleccione...</option>'+
@@ -292,10 +290,13 @@ let mostrarInfoMedico=async()=>{
                       '</select>'+
                   '</div>'+
             '<div class="form-column">'+
-                    '<label for="selectEspecialidad" id="data">Especialidad:<label id="asq">*</label></label>'+
+                    '<label for="selectedEspecialidad" id="data">Especialidad:<label id="asq">*</label></label>'+
                       '<br>'+
                      '<select name="selectedEspecialidad" id="selectedEspecialidad" required>'+
-                                               
+                     '<option value="Nefrólogo">Nefrólogo</option>'+
+                     '<option value="Médico general">Médico general</option>'+ 
+                     '<option value="Enfermera de diálisis">Enfermera de diálisis</option>'+
+                     '<option value="Otro">Otro</option>'+ 
                       '</select>'+
                     '</div>'+
                     
@@ -304,7 +305,7 @@ let mostrarInfoMedico=async()=>{
                               '<div class="form-column" id="colcorreo">'+
                     '<label for="correo" id="data">Correo:<label id="asq">*</label></label>'+
                     '<br>'+
-                    '<input type="text" class="correo" id="correo" name="correo" required>'+
+                    '<input type="text" class="correo" placeholder="ejemplo@gmail.com" id="correo" name="correo" required>'+
                   '</div>'+
                   '</div>'+
                   '<div class="buttons">'+
@@ -312,7 +313,7 @@ let mostrarInfoMedico=async()=>{
                     '<a href="administrador.html" class="cancelar">Cancelar</a>'+
                   '</div>'+
                   '<div class="btn-save">'+
-                    '<button type="submit" class="guardarMed">Actualizar</button>'+
+                    '<button type="submit" data-toggle="tooltip" data-placement="bottom" title="Actualizar Profesional" class="guardarMed">Actualizar</button>'+
                   '</div>'+
                   '</div>'
                   '</div>'

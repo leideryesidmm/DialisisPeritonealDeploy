@@ -19,8 +19,7 @@ let pacientesTratados = async () => {
         '</thead>';
 
       pacientes.forEach((paciente) => {
-        let clave = encodeURIComponent(CryptoJS.AES.encrypt(paciente.cedula, "clave_secreta").toString())
-        console.log(clave);
+        let clave = paciente.cedula;
         msg +=
           '<tr>' +
           '<td>' + paciente.nombre + '</td>' +
@@ -29,7 +28,7 @@ let pacientesTratados = async () => {
           '<a class="icon-link" onclick="irPaciente(\'' + clave + '\', \'' + paciente.nombre + '\')">' +
           '<img src="../img/ver.png" title="Ver Paciente" class="ver imagen-crecible-iconos" alt="Ver paciente"/>' +
           '</a>';
-          if(usuario!="administrador"){
+          if(usuario=="medico"||usuario=="administrador"){
           msg+='<a class="icon-link" onclick="editarPaciente(\'' + clave + '\')">' +
           '<img src="../img/lapiz.png" title="Editar Paciente" alt="Editar paciente" class="actualizar imagen-crecible-iconos"/>' +
           '</a>';
@@ -60,7 +59,7 @@ let pacientesTratados = async () => {
           '</div>' +
           '<div class="modal-footer">' +
           '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>' +
-          '<button type="submit" onclick="inhabilitarPaciente(' + paciente.cedula + ')"" class="btn btn-danger">Inhabilitar</button>' +
+          '<button type="submit" onclick="inhabilitarPaciente(' + paciente.cedula + ')"" data-toggle="tooltip" data-placement="bottom" title="Inhabilitar Paciente" class="btn btn-danger">Inhabilitar</button>' +
           '</div>' +
           '</div>' +
           '</div>' +
@@ -161,7 +160,7 @@ let pacientesInhabilitados = async () => {
           '<td>' + paciente.nombre + '</td>' +
           '<td>' + paciente.cedula + '</td>' +
           '<td>' +
-          '<a  href="" data-bs-toggle="modal" data-bs-target="#habilitarpaciente' + cont + '" type="button">' +
+          '<a  href="" data-bs-toggle="modal" data-toggle="tooltip" data-placement="bottom" title="Reactivar Paciente" data-bs-target="#habilitarpaciente' + cont + '" type="button">' +
           '<img src="../img/actualizar.png" class="actualizar imagen-crecible-iconos"/>' +
           '</a >' +
           '</td>' +
@@ -184,7 +183,7 @@ let pacientesInhabilitados = async () => {
           '</div>' +
           '<div class="modal-footer">' +
           '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>' +
-          '<button type="button" onclick="habilitarPaciente(' + paciente.cedula + ')"" class="btn" id="btn-green">Habilitar</button>' +
+          '<button type="button" onclick="habilitarPaciente(' + paciente.cedula + ')"" data-toggle="tooltip" data-placement="bottom" title="Habilitar Paciente" class="btn" id="btn-green">Habilitar</button>' +
           '</div>' +
           '</div>' +
           '</div>' +

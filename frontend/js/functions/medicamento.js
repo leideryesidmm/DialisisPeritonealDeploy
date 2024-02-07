@@ -74,7 +74,7 @@ let listMedicamentos = async (medicamentos) => {
 if(usuario=="paciente"){
   let msge="";
   msge+=
-  ' <a class="btn-flotante" href="addMedicamento.html"><button id="redondo" class="btn text-white"><h3>+</h3></button></a>';
+  ' <a class="btn-flotante" href="addMedicamento.html"><button id="redondo" data-toggle="tooltip" data-placement="bottom" title="Agregar Medicamento" class="btn text-white"><h3>+</h3></button></a>';
   document.getElementById("flotante").innerHTML=msge;
   }
   medicamentos = await medicamentos;
@@ -157,7 +157,7 @@ if(usuario=="paciente"){
       "</div>" +
       '<div class="modal-footer">' +
       '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>' +
-      '<button type="submit" onclick="eliminarMedicamento('+medicamento.idFormulaMedicamento+')" class="btn btn-danger">Eliminar</button>' +
+      '<button type="submit" onclick="eliminarMedicamento('+medicamento.idFormulaMedicamento+')" data-toggle="tooltip" data-placement="bottom" title="Eliminar Medicamento" class="btn btn-danger">Eliminar</button>' +
       "</div>" +
       "</div>";}
       medicamentoHTML+="</div>"+
@@ -173,8 +173,6 @@ if(usuario=="paciente"){
       }
       cont++;
     });
-    console.log(medicamentosRecetadosHTML);
-    console.log(medicamentosNoRecetadosHTML);
     if (medicamentosRecetadosHTML !== "") {
       msg += '<h2>Medicamentos Recetados</h2><br>' + medicamentosRecetadosHTML;
     }
@@ -195,15 +193,12 @@ if(usuario=="paciente"){
 
 let formatearFechas= function(fechaOriginal){
 
-// Convertir la fecha a un objeto Date
 const fecha = new Date(fechaOriginal);
 
-// Obtener los componentes de la fecha
 const year = fecha.getFullYear();
 const month = ('0' + (fecha.getMonth() + 1)).slice(-2);
 const day = ('0' + fecha.getDate()).slice(-2);
 
-// Crear la fecha formateada
 const fechaFormateada = `${year}-${month}-${day}`;
 return fechaFormateada;
 }

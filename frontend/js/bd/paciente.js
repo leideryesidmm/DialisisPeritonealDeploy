@@ -1,36 +1,6 @@
-
-var cedulaEncriptada = "";
-var contraseniaEncriptada;
+let cedulaEncriptada = "";
+let contraseniaEncriptada;
 let dat= localStorage.getItem("datos");
-
-let obtenerCedulasUsuarios=async(id, cedula)=>{
-  let result = "";
-  console.log(cedula);
-  const peticion= await fetch(localStorage.getItem("servidorAPI")+'Usuario/findAllUsuarios',{
-    method:'GET',
-    headers:{
-      "Accept":"application/json",
-      "Content-Type": "application/json"
-    }
-      });
-      const pacientes=await peticion.json();
-      console.log(pacientes);
-      pacientes.forEach(paciente=>{
-        let decryptedCedula = CryptoJS.AES.decrypt(paciente.cedula, cajaNegra).toString(CryptoJS.enc.Utf8);
-        console.log(decryptedCedula);
-        if(cedula===decryptedCedula){   
-        console.log("ENTRO");
-      if(id == 0){
-        result = paciente.cedula;
-      }
-      if(id == 1){
-        result = paciente.contrasenia;
-      }
-    }
-    })
-    console.log(result)
-  return result;
-}
 
 let cambioContraseniaAlIniciar=async(event)=>{
   event.preventDefault();
@@ -38,13 +8,14 @@ let cambioContraseniaAlIniciar=async(event)=>{
   let dato=JSON.parse(data);
       let cedul= decodeURIComponent(dato.cedula);
   event.preventDefault();
+  await obtenerClave();
+  await obtenerIv();
     const newcontrasenia = document.getElementById("newcontrasenia").value;
-    console.log(cedul);
     if (newcontrasenia === "" ) {
       document.getElementById("errorMensaje").innerText = "Por favor ingrese una nueva contraseña.";
   }
 
-  let nuevaContrasenia=CryptoJS.AES.encrypt(newcontrasenia, cajaNegra).toString();
+  let nuevaContrasenia=CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(encodeURIComponent(newcontrasenia)), CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv), mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7}).toString();
   let  usuarioInDto={
     cedula:cedul, contrasenia:nuevaContrasenia
   }
@@ -54,7 +25,8 @@ let cambioContraseniaAlIniciar=async(event)=>{
       body: JSON.stringify(usuarioInDto),
       headers: {
         "Accept": "application/json",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": dato.token
       }
     })
       .then(response => {
@@ -86,48 +58,64 @@ function passwordVisibilityActual(inputId, iconClass) {
   }
 }
 
+let paciente=async(cedula)=>{
+  usuario={
+    cedula:cedula
+  }
+  let data = localStorage.getItem("datos");
+    let dato=JSON.parse(data);
+  let peticion=await fetch(localStorage.getItem("servidorAPI")+"Usuario/cedula", {
+    method:"POST",
+    headers:{
+      "Accept":"application/json",
+      "Content-Type":"application/json",
+      "Authorization": dato.token
+    },
+    body:JSON.stringify(usuario)
+  })
+    if (peticion.status===200) {
+      const usuario=await peticion.json();
+      return usuario;
+    }
+    else{
+      return null;
+    }
+}
 
 let cambioContrasenia = async (event) => {
   event.preventDefault();
-let data = localStorage.getItem("datos");
-let dato=JSON.parse(data);
-console.log(data);
-    let cedul= decodeURIComponent(dato.cedula);
-    console.log(cedul);
-
-    let cedulaEncriptada="";
-    let contraseniaEncriptadaBD="";
-    let decryptedCedula = CryptoJS.AES.decrypt(cedul, cajaNegra).toString(CryptoJS.enc.Utf8);
-     cedulaEncriptada = await obtenerCedulasUsuarios(0,decryptedCedula);
-    console.log(decryptedCedula);
-
-      contraseniaEncriptadaBD = await obtenerCedulasUsuarios(1,decryptedCedula);
-    console.log(contraseniaEncriptadaBD);
-
-
-let contraseniaBD = CryptoJS.AES.decrypt(contraseniaEncriptadaBD, cajaNegra).toString(CryptoJS.enc.Utf8);
-console.log(contraseniaBD);
-
+  await obtenerClave();
+  await obtenerIv();
+  let data = localStorage.getItem("datos");
+  let dato=JSON.parse(data);
+      let cedula= (dato.cedula);
+      const usuario=await paciente(cedula);
+      let contraseniaBD="";
+      if(usuario!=null){
+      contraseniaBD=decodeURIComponent(CryptoJS.AES.decrypt(usuario.contrasenia, CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv), mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
+      }
 const contraseniaAnterior = document.getElementById("contraseniaanterior").value;
 const nuevaContrasenia = document.getElementById("newcontrasenia").value;
-console.log(nuevaContrasenia)
-
+let contraseniaNueva=CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(encodeURIComponent(nuevaContrasenia)), CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv), mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7}).toString();
+      
 if (contraseniaAnterior === contraseniaBD) {
-  const contraseniaEncriptada = CryptoJS.AES.encrypt(nuevaContrasenia, cajaNegra).toString();
+  let usuarioInDto = { cedula: cedula, contrasenia: contraseniaNueva };
 
-  let usuarioInDto = { cedula: cedulaEncriptada, contrasenia: contraseniaEncriptada };
-  console.log(usuarioInDto);
 
-  const peticion= await fetch(localStorage.getItem("servidorAPI")+"Usuario/cambiarContrasenia", {
+  await fetch(localStorage.getItem("servidorAPI")+"Usuario/cambiarContrasenia", {
     method:"PATCH",
     headers:{
       "Accept":"application/json",
-      "Content-Type":"application/json"
+      "Content-Type":"application/json",
+      "Authorization": dato.token
     },
     body:JSON.stringify(usuarioInDto)
   })
   .then(response => {
     if (response.ok) {
+      dato.contrasenia=contraseniaNueva;
+      const nuevaData = JSON.stringify(dato);
+      localStorage.setItem("datos", nuevaData);
       $('#contraseniacambiada').modal('show');
 
       document.getElementById("contraseniaanterior").value = "";
@@ -138,7 +126,6 @@ if (contraseniaAnterior === contraseniaBD) {
     }
   })
   .catch(error => {
-    console.error("Error:", error);
     alert("Error al cambiar la contraseña");
   });
 }
@@ -152,62 +139,57 @@ $('#btnAceptar').click(function() {
 }
 };
 
-
-
-
 let listaPacientes = async () => {
+  await obtenerClave();
+  await obtenerIv();
   let data = localStorage.getItem("datos");
   let dato=JSON.parse(data);
-  console.log(data);
       let usuario = dato.usuario;
       let cedul= decodeURIComponent(dato.cedula);
-      console.log(cedul);
-      console.log(usuario);
 
       let cedulaEncriptada="";
-      console.log(await obtenerCedulasUsuarios(0,CryptoJS.AES.decrypt(decodeURIComponent(localStorage.getItem("cedulaPaciente")), "clave_secreta").toString(CryptoJS.enc.Utf8)))
       if(usuario=="medico" || usuario=="administrador"){
-       cedulaEncriptada = await obtenerCedulasUsuarios(0,CryptoJS.AES.decrypt(decodeURIComponent(localStorage.getItem("cedulaPaciente")), "clave_secreta").toString(CryptoJS.enc.Utf8));
-      console.log(cedulaEncriptada);}
+        let cedulaDesencriptada = localStorage.getItem("cedulaPaciente");
+        cedulaEncriptada=CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(encodeURIComponent(cedulaDesencriptada)), CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv), mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7}).toString();
+      }
       else{
         cedulaEncriptada=cedul;
       }
   let pacienteInDto = {
     cedula: cedulaEncriptada
   }
-  console.log(pacienteInDto)
-    const peticion= await fetch(localStorage.getItem("servidorAPI")+"paciente/findPacienteByCedula",{
+    const peticion= await fetch(localStorage.getItem("servidorAPI")+"paciente/findPacienteByCedula/false",{
       method:"POST",
       headers: {
         "Accept":"application/json",
-    "Content-Type":"application/json"
+    "Content-Type":"application/json",
+    "Authorization": dato.token
       },
       body: JSON.stringify(pacienteInDto)
 });
 let pacienteAct={}
     const paciente=await peticion.json();
-console.log(paciente)
-    let nombreDesencriptado= CryptoJS.AES.decrypt(paciente.nombre,cajaNegra).toString(CryptoJS.enc.Utf8);
-    let cedulaDesencriptado= CryptoJS.AES.decrypt(paciente.cedula,cajaNegra).toString(CryptoJS.enc.Utf8);
-    let celularDesencriptado= CryptoJS.AES.decrypt(paciente.celular,cajaNegra).toString(CryptoJS.enc.Utf8);
-    let direccionDesencriptada= CryptoJS.AES.decrypt(paciente.direccion,cajaNegra).toString(CryptoJS.enc.Utf8);
-    let ocupacionDesencriptada= CryptoJS.AES.decrypt(paciente.ocupacion,cajaNegra).toString(CryptoJS.enc.Utf8);
-    let correoDesencriptada= CryptoJS.AES.decrypt(paciente.correo,cajaNegra).toString(CryptoJS.enc.Utf8);
-    let tipoDocumentoDesencriptada= CryptoJS.AES.decrypt(paciente.tipoDocumento,cajaNegra).toString(CryptoJS.enc.Utf8);
-    let epsDesencriptada= paciente.eps.nombre;
-    let peso= paciente.peso;
-    let pesoSeco=paciente.pesoSeco;
-    let tiposangre=CryptoJS.AES.decrypt(paciente.tipoSangre,cajaNegra).toString(CryptoJS.enc.Utf8);
-    let rh=paciente.rh;
-    let altura=paciente.altura;
-    let nacimiento=paciente.fechaNacimiento.split('T');
+    let nombreDesencriptado= decodeURIComponent(CryptoJS.AES.decrypt(paciente[0].nombre,CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
+    let cedulaDesencriptado= decodeURIComponent(CryptoJS.AES.decrypt(paciente[0].cedula,CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
+    let celularDesencriptado= decodeURIComponent(CryptoJS.AES.decrypt(paciente[0].celular,CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
+    let direccionDesencriptada= decodeURIComponent(CryptoJS.AES.decrypt(paciente[0].direccion,CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
+    let ocupacionDesencriptada= decodeURIComponent(CryptoJS.AES.decrypt(paciente[0].ocupacion,CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
+    let correoDesencriptada= decodeURIComponent(CryptoJS.AES.decrypt(paciente[0].correo,CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
+    let tipoDocumentoDesencriptada= decodeURIComponent(CryptoJS.AES.decrypt(paciente[0].tipoDocumento,CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
+    let epsDesencriptada= paciente[0].eps.nombre;
+    let peso= decodeURIComponent(CryptoJS.AES.decrypt(paciente[0].peso,CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
+    let pesoSeco=decodeURIComponent(CryptoJS.AES.decrypt(paciente[0].pesoSeco,CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
+    let tiposangre=decodeURIComponent(CryptoJS.AES.decrypt(paciente[0].tipoSangre,CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
+    let rh=decodeURIComponent(CryptoJS.AES.decrypt(paciente[0].rh,CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
+    let altura=decodeURIComponent(CryptoJS.AES.decrypt(paciente[0].altura,CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
+    let nacimiento=paciente[0].fechaNacimiento.split('T');
     let fechaNacimiento=nacimiento[0];
     let fecha=new Date(fechaNacimiento);
-    let fechaRegistro=paciente.fechaRegistro.split('T');
+    let fechaRegistro=paciente[0].fechaRegistro.split('T');
     let fecha_registro=fechaRegistro[0];
     let fecha_registrado=new Date(fecha_registro);
-    let diabetes=paciente.diabetes;
-    let hipertension=paciente.hipertension;
+    let diabetes=paciente[0].diabetes;
+    let hipertension=paciente[0].hipertension;
     let cedula=cedulaDesencriptado;
     let ocupacion=ocupacionDesencriptada;
     let correo=correoDesencriptada;
@@ -221,18 +203,18 @@ console.log(paciente)
 }
 
 let cuidadorActivo = async () => {
+  await obtenerClave();
+  await obtenerIv();
   let data = localStorage.getItem("datos");
   let dato=JSON.parse(data);
-  console.log(data);
       let usuario = dato.usuario;
       let cedul= decodeURIComponent(dato.cedula);
-      console.log(cedul);
-      console.log(usuario);
 
       let cedulaEncriptada="";
-      if(usuario=="medico"){
-       cedulaEncriptada = await obtenerCedulasUsuarios(0,CryptoJS.AES.decrypt(decodeURIComponent(localStorage.getItem("cedulaPaciente")), "clave_secreta").toString(CryptoJS.enc.Utf8));
-      console.log(cedulaEncriptada);}
+      if(usuario=="medico"||usuario=="administrador"){
+        let cedulaDesencriptada = localStorage.getItem("cedulaPaciente");
+        cedulaEncriptada=CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(encodeURIComponent(cedulaDesencriptada)), CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv), mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7}).toString();
+      }
       else{
         cedulaEncriptada=cedul;
       }
@@ -243,16 +225,17 @@ let cuidadorActivo = async () => {
     method: "POST",
     headers: {
       "Accept": "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Authorization": dato.token
     },
     body: JSON.stringify(pacienteInDto)
   });
   let cuidadorAct = {}
   if (peticion.status === 200) {
     const cuidadores = await peticion.json();
-    let nombreDesencriptado = CryptoJS.AES.decrypt(cuidadores.cuidador.nombre, cajaNegra).toString(CryptoJS.enc.Utf8);
-    let celularDesencriptado = CryptoJS.AES.decrypt(cuidadores.cuidador.telefono, cajaNegra).toString(CryptoJS.enc.Utf8);
-    let direccionDesencriptada = CryptoJS.AES.decrypt(cuidadores.cuidador.direccion, cajaNegra).toString(CryptoJS.enc.Utf8);
+    let nombreDesencriptado = decodeURIComponent(CryptoJS.AES.decrypt(cuidadores.cuidador.nombre,CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
+    let celularDesencriptado = decodeURIComponent(CryptoJS.AES.decrypt(cuidadores.cuidador.telefono,CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
+    let direccionDesencriptada = decodeURIComponent(CryptoJS.AES.decrypt(cuidadores.cuidador.direccion,CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
     let parentescoDesencriptado = cuidadores.cuidador.parentesco.descripcion;
 
     cuidadorAct = {
@@ -267,18 +250,18 @@ let cuidadorActivo = async () => {
 }
 
 let alergias = async () => {
+  await obtenerClave();
+  await obtenerIv();
   let data = localStorage.getItem("datos");
   let dato=JSON.parse(data);
-  console.log(data);
       let usuario = dato.usuario;
       let cedul= decodeURIComponent(dato.cedula);
-      console.log(cedul);
-      console.log(usuario);
 
       let cedulaEncriptada="";
-      if(usuario=="medico"){
-       cedulaEncriptada = await obtenerCedulasUsuarios(0,CryptoJS.AES.decrypt(decodeURIComponent(localStorage.getItem("cedulaPaciente")), "clave_secreta").toString(CryptoJS.enc.Utf8));
-      console.log(cedulaEncriptada);}
+      if(usuario=="medico" || usuario=="administrador"){
+        let cedulaDesencriptada = localStorage.getItem("cedulaPaciente");
+        cedulaEncriptada=CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(encodeURIComponent(cedulaDesencriptada)), CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv), mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7}).toString();
+    }
       else{
         cedulaEncriptada=cedul;
       }
@@ -286,24 +269,21 @@ let alergias = async () => {
     cedula: cedulaEncriptada
   }
   let msgalergias="";
-    const peticion= await fetch(localStorage.getItem("servidorAPI")+"paciente/alergia/listByPaciente",{
+    const peticion= await fetch(localStorage.getItem("servidorAPI")+"DatosMedicos/alergia/listByPaciente",{
       method:"POST",
       headers:{
         "Accept":"application/json",
-        "Content-Type":"application/json"
+        "Content-Type":"application/json",
+        "Authorization": dato.token
       },
       body:JSON.stringify(pacienteInDto)
     });
-    if (peticion.status === 204 || peticion.status === 200) {
-    const alergias=await peticion.json();
-
-    console.log(alergias);
-
-    
+    if (peticion.status === 200) {
+    const alergias=await peticion.json();   
     
     
     alergias.forEach(alergia => {
-      let alergiaEncriptada = CryptoJS.AES.decrypt(alergia.alergia.nombre, cajaNegra).toString(CryptoJS.enc.Utf8);
+      let alergiaEncriptada = decodeURIComponent(CryptoJS.AES.decrypt(alergia.alergia.nombre,CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
       msgalergias = msgalergias + alergiaEncriptada + ", "
     });
     msgalergias = msgalergias.substring(0, msgalergias.length - 2);
@@ -311,30 +291,27 @@ let alergias = async () => {
   return msgalergias;
 }
 
-
-
-
 let encontrarPaciente = async () => {
+  await obtenerClave();
+  await obtenerIv();
   let data = localStorage.getItem("datos");
   let dato=JSON.parse(data);
-  console.log(data);
-      let usuario = dato.usuario;
-      let cedul= decodeURIComponent(dato.cedula);
-      console.log(cedul);
-      console.log(usuario);
-
-      let cedulaEncriptada="";
-      if(usuario=="medico"){
-       cedulaEncriptada = await obtenerCedulasUsuarios(0,CryptoJS.AES.decrypt(decodeURIComponent(localStorage.getItem("cedulaPaciente")), "clave_secreta").toString(CryptoJS.enc.Utf8));
-      console.log(cedulaEncriptada);}
+  let usuario = decodeURIComponent(dato.usuario);
+  let cedul= decodeURIComponent(dato.cedula);
+  let cedulaEncriptada="";
+  if(usuario==="medico" || usuario=="administrador"){
+    let cedulaDesencriptada = localStorage.getItem("cedulaPaciente");
+    cedulaEncriptada=CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(encodeURIComponent(cedulaDesencriptada)), CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv), mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7}).toString();
+  }
       else{
         cedulaEncriptada=cedul;
-      }
-  const peticion = await fetch(localStorage.getItem("servidorAPI") + "paciente/findPacienteByCedula", {
+      }    
+  const peticion = await fetch(localStorage.getItem("servidorAPI") + "paciente/findPacienteByCedula/false", {
     method: "POST",
     headers: {
       "Accept": "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Authorization": dato.token
     },
     body:JSON.stringify({
       cedula:cedulaEncriptada
@@ -342,92 +319,80 @@ let encontrarPaciente = async () => {
   });
 
   const paciente = await peticion.json();
-console.log(paciente);
   let pacienteActual={
-    cedula:paciente.cedula, contrasenia:paciente.contrasenia, rh:paciente.rh,
-    tipoSangre:paciente.tipoSangre
+    cedula:paciente[0].cedula, contrasenia:paciente[0].contrasenia, rh:paciente[0].rh,
+    tipoSangre:paciente[0].tipoSangre
   }
-  console.log(paciente);
   if(usuario=="paciente"){
-  var decryptedNombre = CryptoJS.AES.decrypt(paciente.nombre, cajaNegra).toString(CryptoJS.enc.Utf8);
+  var decryptedNombre = decodeURIComponent(CryptoJS.AES.decrypt(paciente[0].nombre,CryptoJS.enc.Utf8.parse(cajaNegra2),
+  {iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
   document.getElementById("nombre").value = decryptedNombre;
-  var fechaNacimiento = paciente.fechaNacimiento.split("T")[0];
+  var fechaNacimiento = paciente[0].fechaNacimiento.split("T")[0];
   document.getElementById("fecha").value = fechaNacimiento;
-  var decryptedDireccion = CryptoJS.AES.decrypt(paciente.direccion, cajaNegra).toString(CryptoJS.enc.Utf8);
+  var decryptedDireccion = decodeURIComponent(CryptoJS.AES.decrypt(paciente[0].direccion,CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
   document.getElementById("direccion").value = decryptedDireccion;
-  console.log(decryptedDireccion);
-  var decryptedTelefono = CryptoJS.AES.decrypt(paciente.celular, cajaNegra).toString(CryptoJS.enc.Utf8);
-  console.log(decryptedTelefono);
+  var decryptedTelefono = decodeURIComponent(CryptoJS.AES.decrypt(paciente[0].celular,CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
   document.getElementById("telefono").value = decryptedTelefono;
   if(paciente.ocupacion!=""){
-    var decryptedOcupacion = CryptoJS.AES.decrypt(paciente.ocupacion, cajaNegra).toString(CryptoJS.enc.Utf8);
+    var decryptedOcupacion = decodeURIComponent(CryptoJS.AES.decrypt(paciente[0].ocupacion,CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
     document.getElementById("ocupacion").value = decryptedOcupacion;
     }
     if(paciente.correo!=""){
-      var decryptedCorreo = CryptoJS.AES.decrypt(paciente.correo, cajaNegra).toString(CryptoJS.enc.Utf8);
+      var decryptedCorreo = decodeURIComponent(CryptoJS.AES.decrypt(paciente[0].correo,CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
       document.getElementById("correo").value = decryptedCorreo;
     }
     const selectEps = document.getElementById('selectedEps');
-  const descripcionEps= paciente.eps.nombre;
-  console.log(descripcionEps);
+  const descripcionEps= paciente[0].eps.nombre;
   
   Array.from(selectEps.options).forEach((option, index) => {
     if (option.textContent === descripcionEps) {
       selectEps.selectedIndex = index;
     }
   })
-    console.log(paciente.foto);
-  if (paciente.foto!=null) {
-    const binaryString = window.atob(paciente.foto);
-  const byteArray = new Uint8Array(binaryString.length);
-  for (let i = 0; i < binaryString.length; i++) {
-    byteArray[i] = binaryString.charCodeAt(i);
-  }
- 
-  }
+   
   
   }
   else{
-    var decryptedNombre = CryptoJS.AES.decrypt(paciente.nombre, cajaNegra).toString(CryptoJS.enc.Utf8);
+    var decryptedNombre = decodeURIComponent(CryptoJS.AES.decrypt(paciente[0].nombre,CryptoJS.enc.Utf8.parse(cajaNegra2),
+    {iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
   document.getElementById("nombre").value = decryptedNombre;
 
-  var decryptedCedula = CryptoJS.AES.decrypt(paciente.cedula, cajaNegra).toString(CryptoJS.enc.Utf8);
+  var decryptedCedula = decodeURIComponent(CryptoJS.AES.decrypt(paciente[0].cedula,CryptoJS.enc.Utf8.parse(cajaNegra2),
+  {iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
   document.getElementById("documento").value = decryptedCedula;
-
-
-  if(paciente.hipertension==true){
-    console.log(paciente.hipertension);
+  if(paciente[0].hipertension==true){
   document.getElementById("hipertension").checked=true;
   }
-  if(paciente.diabetes==true){
+  if(paciente[0].diabetes==true){
   document.getElementById("diabetes").checked=true;
   }
-  var peso = paciente.peso;
+  var peso = decodeURIComponent(CryptoJS.AES.decrypt(paciente[0].peso,CryptoJS.enc.Utf8.parse(cajaNegra2),
+  {iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
   document.getElementById("peso").value = peso;
-  var pesoseco=paciente.pesoSeco;
+  var pesoseco=decodeURIComponent(CryptoJS.AES.decrypt(paciente[0].pesoSeco,CryptoJS.enc.Utf8.parse(cajaNegra2),
+  {iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
   document.getElementById("pesoseco").value = pesoseco;
-  
-
-  
-  var decryptedEstatura = paciente.altura;
+  var decryptedEstatura = decodeURIComponent(CryptoJS.AES.decrypt(paciente[0].altura,CryptoJS.enc.Utf8.parse(cajaNegra2),
+  {iv: CryptoJS.enc.Utf8.parse(iv),mode: CryptoJS.mode.CBC,padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8));
   document.getElementById("estatura").value=decryptedEstatura;
 }
-console.log(pacienteActual);
   return pacienteActual;
   
 }
 
 let listaEps = async () => {
-  const peticion = await fetch(localStorage.getItem("servidorAPI") + "paciente/ListEps", {
+  let data = localStorage.getItem("datos");
+    let dato=JSON.parse(data);
+  const peticion = await fetch(localStorage.getItem("servidorAPI") + "DatosMedicos/ListEps", {
     method: "GET",
     headers: {
       "Accept": "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Authorization": dato.token
     }
   });
 
   const selectEps = document.getElementById('selectedEps');
-  console.log(selectEps);
 
   if (selectEps.length == 0) {
     const epss = await peticion.json();
@@ -448,10 +413,10 @@ function cancelar(){
   location.href="pacientes.html";
 }
 
-
-
-let actualizarPaciente = async (event) => {  
+let actualizarPaciente = async (event) => {
   event.preventDefault();
+  await obtenerClave();
+  await obtenerIv();
   var botonActualizar = document.getElementById("actualizarPerfil");
             botonActualizar.style.background = "gray";
             botonActualizar.disabled = true;
@@ -459,34 +424,29 @@ let actualizarPaciente = async (event) => {
   let dato=JSON.parse(data);
       let usuario = dato.usuario;
       let cedul= decodeURIComponent(dato.cedula);
-  if(usuario=="paciente"){
-  let foto= document.getElementById("imageFile").files.length;
-  console.log(foto);
-  if(foto>0){
-  subirFoto();
-  }
-}
-
       let cedulaEncriptada="";
-      if(usuario=="medico"){
-       cedulaEncriptada = await obtenerCedulasUsuarios(0,CryptoJS.AES.decrypt(decodeURIComponent(localStorage.getItem("cedulaPaciente")), "clave_secreta").toString(CryptoJS.enc.Utf8));
-      console.log(cedulaEncriptada);}
+    
+
+      if(usuario=="medico" || usuario=="administrador"){
+        let cedulaDesencriptada = localStorage.getItem("cedulaPaciente");
+        cedulaEncriptada=CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(encodeURIComponent(cedulaDesencriptada)), CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv), mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7}).toString();
+       }
       else{
         cedulaEncriptada=cedul;
       }
   var pacienteInDto = {
     cedula: cedulaEncriptada
   }
-    const peticion= await fetch(localStorage.getItem("servidorAPI")+"paciente/findPacienteByCedula",{
+    const peticion= await fetch(localStorage.getItem("servidorAPI")+"paciente/findPacienteByCedula/false",{
       method:"POST",
       headers: {
         "Accept":"application/json",
-    "Content-Type":"application/json"
+    "Content-Type":"application/json",
+    "Authorization": dato.token
       },
       body: JSON.stringify(pacienteInDto)
 });
     const paciente=await peticion.json();
-    console.log(paciente);
   
   if(usuario=="paciente"){
 
@@ -494,95 +454,91 @@ let actualizarPaciente = async (event) => {
   let fechaNacimiento= document.getElementById("fecha").value;
   let telefono = document.getElementById("telefono").value;
   let direccion = document.getElementById("direccion").value;
-      let foto=document.getElementById("imageFile").value;
   let selectTipoDocumento = selectedDocumento.options[selectedDocumento.selectedIndex];
   let tipo_documento = selectTipoDocumento.value;
-  let peso = paciente.peso;
-  let pesoseco=paciente.pesoSeco;
+  let peso = paciente[0].peso;
+  let pesoseco=paciente[0].pesoSeco;
   let ocupacion=document.getElementById("ocupacion").value;
   let correo=document.getElementById("correo").value;
-  let estatura=paciente.altura;
-  var diabetes = paciente.diabetes;
-  var fecha_registro=paciente.fechaRegistro;
-     var hipertension = paciente.hipertension;
+  let estatura=paciente[0].altura;
+  var diabetes = paciente[0].diabetes;
+  var fecha_registro=paciente[0].fechaRegistro;
+     var hipertension = paciente[0].hipertension;
      let selectedOption = selectedEps.options[selectedEps.selectedIndex];
   let eps = selectedOption.value;
       
 
   pacienteInDto = {
-    direccion: CryptoJS.AES.encrypt(direccion, cajaNegra).toString(),
+    direccion: CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(encodeURIComponent(direccion)), CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv), mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7}).toString(),
     fechaNacimiento: fechaNacimiento+"T00:00:00.000Z",
-    peso:parseInt(peso,10),
-    pesoSeco:parseInt(pesoseco,10),
-    nombre: CryptoJS.AES.encrypt(nombre, cajaNegra).toString(),
+    peso:peso,
+    pesoSeco:pesoseco,
+    nombre: CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(encodeURIComponent(nombre)), CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv), mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7}).toString(),
     eps: parseInt(eps,10),
-    celular: CryptoJS.AES.encrypt(telefono, cajaNegra).toString(),
-    ocupacion: CryptoJS.AES.encrypt(ocupacion, cajaNegra).toString(),
-    correo: CryptoJS.AES.encrypt(correo, cajaNegra).toString(),
+    celular: CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(encodeURIComponent(telefono)), CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv), mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7}).toString(),
+    ocupacion: CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(encodeURIComponent(ocupacion)), CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv), mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7}).toString(),
+    correo: CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(encodeURIComponent(correo)), CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv), mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7}).toString(),
     activo:true,
     cedula:cedulaEncriptada,
-    tipoSangre:paciente.tipoSangre,
-    tipoDocumento:CryptoJS.AES.encrypt(tipo_documento, cajaNegra).toString(),
-    rh:paciente.rh,
-    contrasenia:paciente.contrasenia,
+    tipoSangre:paciente[0].tipoSangre,
+    tipoDocumento:CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(encodeURIComponent(tipo_documento)), CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv), mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7}).toString(),
+    rh:paciente[0].rh,
+    contrasenia:paciente[0].contrasenia,
     altura:estatura,
-    cambio_contrasenia:paciente.cambio_contrasenia,
+    cambioContrasenia:paciente[0].cambioContrasenia,
     diabetes:diabetes,
     fechaRegistro:fecha_registro,
     hipertension:hipertension,
-    eps: parseInt(eps,10)
   };
 }
 else{
-  let nombre = paciente.nombre;
-  let fechaNacimiento=paciente.fechaNacimiento;
-  let telefono = paciente.celular;
-  let direccion = paciente.direccion;
-  let tipo_documento= paciente.tipoDocumento;
-  let peso = document.getElementById("peso").value;
-  let pesoseco=document.getElementById("pesoseco").value;
-  let ocupacion=paciente.ocupacion;
-  let correo=paciente.correo;
-  let fecha_registro=paciente.fechaRegistro;
-  let cambiocontrasenia=paciente.cambio_contrasenia;
-  let estatura=document.getElementById("estatura").value;
-  let eps = paciente.eps.idEps;
-  var diabetes = document.getElementById('diabetes').checked;
-  var hipertension = document.getElementById('hipertension').checked;
-
+  let nombre = paciente[0].nombre;
+  let fechaNacimiento=paciente[0].fechaNacimiento;
+  let telefono = paciente[0].celular;
+  let direccion = paciente[0].direccion;
+  let tipo_documento= paciente[0].tipoDocumento;
+  let peso = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(encodeURIComponent(document.getElementById("peso").value)), CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv), mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7}).toString();
+  let pesoseco=CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(encodeURIComponent(document.getElementById("pesoseco").value)), CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv), mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7}).toString();
+  let ocupacion=paciente[0].ocupacion;
+  let correo=paciente[0].correo;
+  let fecha_registro=paciente[0].fechaRegistro;
+  let cambiocontrasenia=paciente[0].cambioContrasenia;
+  let estatura=CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(encodeURIComponent(document.getElementById("estatura").value)), CryptoJS.enc.Utf8.parse(cajaNegra2),{iv: CryptoJS.enc.Utf8.parse(iv), mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7}).toString();
+  let eps = paciente[0].eps.idEps;
+  let diabetes = document.getElementById('diabetes').checked;
+  let hipertension = document.getElementById('hipertension').checked;
 
   pacienteInDto = {
     direccion: direccion,
     fechaNacimiento: fechaNacimiento,
-    peso:parseInt(peso,10),
-    pesoSeco:parseInt(pesoseco,10),
+    peso:peso,
+    pesoSeco:pesoseco,
     nombre: nombre,
     eps: eps,
     celular: telefono,
     ocupacion: ocupacion,
-    cambio_contrasenia:cambiocontrasenia,
+    cambioContrasenia:cambiocontrasenia,
     correo: correo,
     fechaRegistro:fecha_registro,
     activo:true,
     cedula:cedulaEncriptada,
-    tipoSangre:paciente.tipoSangre,
+    tipoSangre:paciente[0].tipoSangre,
     tipoDocumento:tipo_documento,
-    rh:paciente.rh,
-    contrasenia:paciente.contrasenia,
-    altura:parseInt(estatura,10),
+    rh:paciente[0].rh,
+    contrasenia:paciente[0].contrasenia,
+    altura:estatura,
     diabetes:diabetes,
-    hipertension:hipertension
+    hipertension:hipertension, 
   };
-  console.log(pacienteInDto);
+  
 }
-
-
   fetch(localStorage.getItem("servidorAPI") + "paciente/actualizar", {
     method: "PATCH",
     body: JSON.stringify(pacienteInDto),
     headers: {
       "Accept": "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Authorization": dato.token
     }
   })
     .then(response => {
@@ -598,65 +554,18 @@ else{
     .catch(error => {
       console.error(error);
     });
+    
 }
 function cerrarModal() {
   modal.style.display = 'none';
 }
 
-let subirFoto = async () => {
-  let dato = JSON.parse(dat);
-  let cedul = decodeURIComponent(dato.cedula);
-console.log(cedul);
-  const formData = new FormData();
-  const imageFile = document.getElementById("imageFile").files[0];
-  formData.append("foto", imageFile);
-  formData.append("cedula", cedul);
-console.log(formData);
-  fetch(localStorage.getItem("servidorAPI") + "paciente/upload-image", {
-    method: "POST",
-    body: formData
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.success) {
-    } else {
+let eventoPerfil = () => {
+  document.addEventListener("DOMContentLoaded", async () => {
+    try {
+      await perfil();
+    } catch (error) {
+      console.error("Error in DOMContentLoaded:", error);
     }
   });
-}
-
-let eventoPerfil=async()=>{
-document.addEventListener("DOMContentLoaded", async () => {
-  try {
-    await perfil();
-
-    const mostrarFoto = async () => {
-    let ced = JSON.parse(dat);
-    let cedul = decodeURIComponent(ced.cedula);
-    const usuarioInDto = {
-      cedula: cedul
-    };
-
-    fetch(localStorage.getItem("servidorAPI") + "Usuario/imagen", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(usuarioInDto)
-    })
-      .then(response => response.blob())
-      .then(blob => {
-        const imgElement=document.getElementById("imagen");
-        if (blob.size!=0) {
-          const imageUrl = URL.createObjectURL(blob);
-          imgElement.src = imageUrl;
-        } else {
-          imgElement.style.display = "none";
-        }
-      });
-  };
-  mostrarFoto();
-} catch (error) {
-  console.error("Error in DOMContentLoaded:", error);
-}
-});
-}
+};

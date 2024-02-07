@@ -1,6 +1,5 @@
 let cuidadorPrincipal=async(cuidadores, cuidAntiguos)=>{
     cuidadores = await cuidadores;
-    console.log(cuidadores);
     cuidAntiguos=await cuidAntiguos;
     let msg="";
     if(cuidadores==null){
@@ -9,13 +8,13 @@ let cuidadorPrincipal=async(cuidadores, cuidAntiguos)=>{
             '<div class="btn-container">' ;
             if(cuidAntiguos.length>=1){
                 msg+=
-            '<button class="cambiarCuidador" type="submit" id="cambiar" onclick="cuidadoresInactivos'+ '(cuidadoresAntiguos())" "class="cambiarCuidador">Cambiar</button>';
+            '<button class="cambiarCuidador" data-toggle="tooltip" data-placement="bottom" title="Reestablecer Cuidador Antiguo" type="submit" id="cambiar" onclick="cuidadoresInactivos'+ '(cuidadoresAntiguos())" "class="cambiarCuidador">Cambiar</button>';
         }
-            msg+='<a href="agregarCuidador.html" type="submit" class="btn-nuevo" id="nuevo">Nuevo</a>' +
+            msg+='<a href="agregarCuidador.html" data-toggle="tooltip" data-placement="top" title="Agregar Nuevo Cuidador" type="submit" class="btn-nuevo" id="nuevo">Nuevo</a>' +
         '</div>';   
     }
     else{
-        document.getElementById("img-editar").innerHTML='<a href="editarCuidador.html"><img src="../img/'+'editarPerfil.png" alt="editar Cuidador"></a>';
+        document.getElementById("img-editar").innerHTML='<a href="editarCuidador.html" data-toggle="tooltip" data-placement="top" title="Editar Cuidador Activo"><img src="../img/'+'editarPerfil.png" alt="editar Cuidador"></a>';
     msg+=
 
     '<br><div class="container">' +
@@ -57,9 +56,9 @@ let cuidadorPrincipal=async(cuidadores, cuidAntiguos)=>{
 '</div>' +
     '<div class="btn-container">';
     if(cuidAntiguos.length>=1){
-       msg+= '<button class="cambiarCuidador" type="submit" id="cambiar" onclick="cuidadoresInactivos(cuidadoresAntiguos())" "class="cambiarCuidador">Cambiar</button>'};
-        msg+= '<a href="agregarCuidador.html" class="btn-nuevo" id="nuevo">Nuevo</a>' +
-        '<button class="inhabilitarCuidador" data-toggle="modal" data-target="#successModal" type="submit" id="inhabilitar"' + 'onclick="inhabilitarCuidador()" "class="inhabilitarCuidador">Inhabilitar</button>'
+       msg+= '<button class="cambiarCuidador" data-toggle="tooltip" data-placement="bottom" title="Reestablecer Cuidador" type="submit" id="cambiar" onclick="cuidadoresInactivos(cuidadoresAntiguos())" "class="cambiarCuidador">Cambiar</button>'};
+        msg+= '<a href="agregarCuidador.html" data-toggle="tooltip" data-placement="top" title="Agregar Nuevo Cuidador" class="btn-nuevo" id="nuevo">Nuevo</a>' +
+        '<button class="inhabilitarCuidador" data-toggle="tooltip" data-placement="bottom" title="Inhabilitar Cuidador" data-toggle="modal" data-target="#successModal" type="submit" id="inhabilitar"' + 'onclick="inhabilitarCuidador()" "class="inhabilitarCuidador">Inhabilitar</button>'
     '</div>';
 }
     document.getElementById("agregarCuidador").innerHTML = msg;
@@ -67,6 +66,7 @@ let cuidadorPrincipal=async(cuidadores, cuidAntiguos)=>{
 
 let cuidadoresInactivos = async (cuidadores) => {
     cuidadores = await cuidadores;
+    let activo=await cuidadorActivo();
     let msg = "";
     document.getElementById("cambiar").style.display = "none";
     document.getElementById("nuevo").style.marginLeft = "200px";
@@ -81,29 +81,44 @@ let cuidadoresInactivos = async (cuidadores) => {
       if(cuidadores!=null){
         let cont=0;
     cuidadores.forEach((cuidador) => {
-        
-      if (cuidador.activo === false) {
-        
+      if(activo!=null){
+        if (cuidador.activo === false&&parseInt(activo.cedula)!=parseInt(cuidador.cedulaCuidador)) {
         msg +=
           '<tr>' +
           '<td>' + cuidador.cedulaCuidador + '</td>' +
           '<td>' + cuidador.nombre + '</td>' +
           '<td>' +
-          '<button onclick="reactivarCuidador(\'' + cuidador.cedulaCuidador + '\', \''+cont+'\')" type="button" id="reactivarCuidador'+cont+'" class="reactivarCuidador" data-toggle="modal" data-target="#successModalReactivar">' +
+          '<button onclick="reactivarCuidador(\'' + cuidador.cedulaCuidador + '\', \''+cont+'\')" type="button" id="reactivarCuidador'+cont+'" data-toggle="tooltip" data-placement="bottom" title="Reactivar Cuidador" class="reactivarCuidador" data-toggle="modal" data-target="#successModalReactivar">' +
           '<img src="../img/actualizar.png" class="actualizar imagen-crecible-iconos" alt="actualizar Cuidador"/>' +
           '</button>' +
           '</td>' +
           '</tr>';
           cont++;
       }
+    }else{
+        if (cuidador.activo === false) {
+            msg +=
+              '<tr>' +
+              '<td>' + cuidador.cedulaCuidador + '</td>' +
+              '<td>' + cuidador.nombre + '</td>' +
+              '<td>' +
+              '<button onclick="reactivarCuidador(\'' + cuidador.cedulaCuidador + '\', \''+cont+'\')" type="button" id="reactivarCuidador'+cont+'" data-toggle="tooltip" data-placement="bottom" title="Reactivar Cuidador" class="reactivarCuidador" data-toggle="modal" data-target="#successModalReactivar">' +
+              '<img src="../img/actualizar.png" class="actualizar imagen-crecible-iconos" alt="actualizar Cuidador"/>' +
+              '</button>' +
+              '</td>' +
+              '</tr>';
+              cont++;
+          }
+    }
       
     });}
     msg += '</table>';
-    msg += '<button class="cerrarInactivos" onclick="cerrarCuidAnt()" type="submit" id="inhabilitar"' + '" "class="cerrarCambiarCuidador">Cerrar</button>'
+    msg += '<button class="cerrarInactivos" onclick="cerrarCuidAnt()" data-toggle="tooltip" data-placement="bottom" title="Cerrar Cuidadores Antiguos" type="submit" id="inhabilitar"' + '" "class="cerrarCambiarCuidador">Cerrar</button>'
     document.getElementById("cuidadoresAntiguos").innerHTML = msg;
   };
 
   let cerrarCuidAnt=async()=>{
     location.reload();
   }
+  
 

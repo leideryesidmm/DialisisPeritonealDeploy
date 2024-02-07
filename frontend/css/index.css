@@ -280,6 +280,17 @@ tbody tr:hover {
   margin-left: 15px;
 }
 
+/* #tableRecambios{
+  overflow-x: scroll;
+  margin-right: 15px;
+  margin-left: 15px;
+} */
+
+.scroll {
+  max-height: 100%; /* o la altura máxima que desees */
+  overflow-y: auto;
+}
+
 
 
 #icono {
@@ -542,3 +553,7 @@ li{
   text-decoration: none;
   color:black;
 }
+
+
+
+
