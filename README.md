@@ -13,7 +13,7 @@
 3. 🧩[Arquitectura](#arquitectura)
 4. 🌐[Despliegue](#despliegue)
 5. 🖥[Demo](#demo)
-6.  [Manuel Técnico](#manual-técnico)
+6. 📋[Manuel Técnico](#manual-técnico)
 7. 👫[Autores](#autores)
 8. 🏫[Institución Académica](#institución-académica)
 
