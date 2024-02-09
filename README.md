@@ -13,8 +13,9 @@
 3. 🧩[Arquitectura](#arquitectura)
 4. 🌐[Despliegue](#despliegue)
 5. 🖥[Demo](#demo)
-6. 👫[Autores](#autores)
-7. 🏫[Institución Académica](#institución-académica)
+6.  [Manuel Técnico](#manual-técnico)
+7. 👫[Autores](#autores)
+8. 🏫[Institución Académica](#institución-académica)
 
 ### Descripción
 ___
@@ -154,6 +155,11 @@ ___
 Esta solución se implementó en un servidor suministrado por la universidad con el propósito de llevar a cabo pruebas por parte del equipo de desarrollo y un piloto de prueba en la unidad renal Davita. Durante este proceso, se evaluó su desempeño con usuarios que eran pacientes sometidos a diálisis peritoneal en dicha unidad renal.
 
 En el siguiente enlace podra encontrar la aplicación funcional: [Mi Salud Renal]
+
+### Manual Técnico
+___
+
+A continuación puede [Descargar](https://drive.google.com/file/d/1x_CyWeGaRWRP6ArHJLYApXIho26kYm1t/view?usp=sharing) el Manual técnico de aplicación 
 
 ### Autores
 ___
