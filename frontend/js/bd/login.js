@@ -1,4 +1,4 @@
-let servidorAPI = "http://localhost:8104/";
+let servidorAPI = "/misaludrenalbackend/";
 let iv;
 let cajaNegra2;
 
