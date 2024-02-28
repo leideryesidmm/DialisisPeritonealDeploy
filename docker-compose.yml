@@ -21,7 +21,7 @@ services:
     image: openjdk:19
     working_dir: /code
     ports:
-      - 8104:8081
+      - 8104:8104
     environment:
       - DATABASE_URL=jdbc:mysql://10.128.0.15:3306/db01student1151788?useSSL=false&serverTimezone=UTC
       - DATABASE_USERNAME=student1151788
